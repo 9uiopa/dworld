@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.toy'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Jakarta Bean Validation API
+    implementation 'jakarta.validation:jakarta.validation-api:2.0.2'
+
+    // Hibernate Validator - Bean Validation의 구현체
+    implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
+
+    // EL (Expression Language) 지원을 위한 라이브러리
+    implementation 'org.glassfish:jakarta.el:3.0.3'
+
+}
+
+bootJar {
+    archiveFileName = 'dworld.jar'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('bootJar') {
+    mainClass.set('com.toy.dworld.DworldApplication')
+}

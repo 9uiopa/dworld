@@ -1,0 +1,60 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # 필수 , 루트 암호 설정
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306" # 로컬 3306 접근시 컨테이너 3306 port로 이동
+    volumes:
+      - ./mysqldb:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - app-network
+    restart: always
+
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false # useSSL=false: mysql 8.0이상 플러그인 보안 문제 해결용
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - app-network
+
+
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    ports:
+      - '9200:9200'
+    environment:
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - app-network
+
+
+  kibana:
+    image: kibana:7.17.9
+    ports:
+      - '5601:5601'
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
