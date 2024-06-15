@@ -2,14 +2,16 @@ package com.toy.dworld.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import com.toy.dworld.domain.Article;
+import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.util.ElasticSearchUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
@@ -17,16 +19,38 @@ import java.util.function.Supplier;
 public class ElasticSearchService {
     private final ElasticsearchClient elasticsearchClient;
 
-//    public SearchResponse<Article> matchArticlesWithKeyword(String fieldValue) throws IOException {
-//        Supplier<Query> supplier = ElasticSearchUtil.supplierWithKeyword(fieldValue); // 쿼리문 생성
-//        return elasticsearchClient.search(s->s.index("article").query(supplier.get()), Article.class);
-//    }
-
-    public SearchResponse<Article> matchArticlesWithKeyword(String fieldValue) throws IOException {
-        Query query = Query.of(q -> q.multiMatch(mmq -> mmq.fields(Arrays.asList("title", "content")).query(fieldValue)));
-        return elasticsearchClient.search(s -> s.index("article").query(query), Article.class);
+    public SearchResponse<ArticleIndex> matchArticlesWithKeywords(String fieldValue) throws IOException {
+        Supplier<Query> supplier = ElasticSearchUtil.supplierWithKeyword(fieldValue); // 쿼리문 생성
+        return elasticsearchClient.search(s->s.index("article").query(supplier.get()), ArticleIndex.class);
     }
 
+    public SearchResponse<ArticleIndex> matchArticlesWithKeyword(String fieldValue) throws IOException {
+        Query query = Query.of(q -> q.multiMatch(mmq -> mmq.fields(Arrays.asList("title", "content")).query(fieldValue)));
+        return elasticsearchClient.search(s -> s.index("article").query(query), ArticleIndex.class);
+    }
+
+    public SearchResponse<ArticleIndex> searchArticles(String searchText) throws IOException {
+        Query query = Query.of(q ->
+                q.multiMatch(mmq -> mmq
+                        .fields(Arrays.asList("title", "content"))
+                        .query(searchText)
+                        .fuzziness("AUTO")  // 자동으로 fuzziness 레벨 설정 - 문자열 길이가 길수록 허용 오차수가 늘어남
+                )
+        );
+
+        SearchRequest request = SearchRequest.of(sr ->
+                sr.index("article2")
+                        .query(query)
+        );
+
+        return elasticsearchClient.search(request, ArticleIndex.class);
+    }
+
+    public SearchResponse<Map> matchAllServices() throws IOException {
+        Supplier<Query> supplier = ElasticSearchUtil.supplier();
+        SearchResponse<Map> searchResponse = elasticsearchClient.search(s->s.query(supplier.get()), Map.class);
+        return searchResponse;
+    }
 
 
 
