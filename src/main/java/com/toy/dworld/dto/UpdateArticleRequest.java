@@ -1,6 +1,5 @@
 package com.toy.dworld.dto;
 
-import com.toy.dworld.domain.Article;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

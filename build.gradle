@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -40,6 +40,8 @@ dependencies {
     // EL (Expression Language) 지원을 위한 라이브러리
     implementation 'org.glassfish:jakarta.el:3.0.3'
 
+    // Elasticsearch와 호환되는 Spring Data Elasticsearch 버전 설정
+    implementation 'org.springframework.data:spring-data-elasticsearch:4.4.2'
 }
 
 bootJar {

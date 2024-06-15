@@ -7,8 +7,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     # 테이블 생성 후에 data.sql 실행
     # defer-datasource-initialization: true
-
   datasource:
     url: jdbc:mysql://db:3306/${MYSQL_DATABASE} # 'db'는 컨테이너 이름. 로컬 db를 쓸 때는 localhost
     username: ${MYSQL_USER} # docker-compose에 정의된 docker 환경변수
     password: ${MYSQL_PASSWORD}
+
+  elasticsearch:
+    uris: http://elasticsearch:9200
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          elasticsearch: DEBUG
