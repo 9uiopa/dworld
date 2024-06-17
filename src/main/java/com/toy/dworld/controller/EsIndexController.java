@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class EsIndexController {
     private final ElasticSearchService elasticSearchService;
 
-        @GetMapping(params = "keyword")
+    @GetMapping(params = "keyword")
     public List<ArticleIndex> searchArticles(@RequestParam String keyword) throws IOException {
         SearchResponse<ArticleIndex> searchResponse = elasticSearchService.searchArticles(keyword);
         List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
