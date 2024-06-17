@@ -1,15 +1,15 @@
-//package com.toy.dworld.dto;
-//
-//import com.toy.dworld.entity.Article;
-//import lombok.Getter;
-//
-//@Getter
-//public class ArticleResponse {
-//    private final String title;
-//    private final String content;
-//
-//    public ArticleResponse(Article article){
-//        this.title = article.getTitle();
-//        this.content = article.getContent();
-//    }
-//}
+package com.toy.dworld.dto;
+
+import com.toy.dworld.entity.Article;
+import lombok.Getter;
+
+@Getter
+public class ArticleResponse {
+    private final String title;
+    private final String content;
+
+    public ArticleResponse(Article article){
+        this.title = article.getTitle();
+        this.content = article.getContent();
+    }
+}
