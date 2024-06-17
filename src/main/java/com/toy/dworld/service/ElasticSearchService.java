@@ -29,17 +29,18 @@ public class ElasticSearchService {
         return elasticsearchClient.search(s -> s.index("article").query(query), ArticleIndex.class);
     }
 
-    public SearchResponse<ArticleIndex> searchArticles(String searchText) throws IOException {
+    public SearchResponse<ArticleIndex> searchArticles(String keyword) throws IOException {
+        // 쿼리 생성
         Query query = Query.of(q ->
                 q.multiMatch(mmq -> mmq
                         .fields(Arrays.asList("title", "content"))
-                        .query(searchText)
+                        .query(keyword)
                         .fuzziness("AUTO")  // 자동으로 fuzziness 레벨 설정 - 문자열 길이가 길수록 허용 오차수가 늘어남
                 )
         );
-
+        //요청 생성
         SearchRequest request = SearchRequest.of(sr ->
-                sr.index("article2")
+                sr.index("article")
                         .query(query)
         );
 
