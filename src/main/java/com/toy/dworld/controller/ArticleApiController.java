@@ -8,7 +8,6 @@ import com.toy.dworld.dto.ArticleResponse;
 import com.toy.dworld.dto.UpdateArticleRequest;
 import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.service.ArticleService;
-import com.toy.dworld.service.ElasticSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,11 +24,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RestController
 public class ArticleApiController {
-    private final ElasticSearchService elasticSearchService;
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request){
+    public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request) throws IOException {
         Article newArticle = articleService.save(request, "author");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newArticle);
@@ -70,7 +67,7 @@ public class ArticleApiController {
     // 게시물 검색
     @GetMapping(params = "keyword")
     public List<ArticleIndex> searchArticles(@RequestParam String keyword) throws IOException {
-        SearchResponse<ArticleIndex> searchResponse = elasticSearchService.searchArticles(keyword);
+        SearchResponse<ArticleIndex> searchResponse = articleService.searchArticles(keyword);
         List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
 
         return listOfHits.stream()
