@@ -1,6 +1,7 @@
 package com.toy.dworld.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.Refresh;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
@@ -21,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.elasticsearch.action.admin.indices.stats.CommonStatsFlags.Flag.Refresh;
+
 @RequiredArgsConstructor
 @Service
 public class ArticleService {
@@ -29,13 +32,17 @@ public class ArticleService {
     private final ElasticsearchClient elasticsearchClient;
 
     public Article save(AddArticleRequest request, String userName) throws IOException {
+        // jpa 레코드 삽입
+        Article newArticle = articleRepository.save(request.toEntity(userName));
+
         //es index에 document 저장
         elasticsearchClient.index(i -> i
                 .index("article")
                 .document(request.toDocument(userName))
+                .id(newArticle.getId().toString())
                 .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
         // jpa 레코드 삽입
-        return articleRepository.save(request.toEntity(userName));
+        return newArticle;
     }
 
     public List<Article> findAll(){
@@ -45,16 +52,27 @@ public class ArticleService {
     public Optional<Article> findById(long id) {
         return articleRepository.findById(id);
     }
+    public void delete(long id) throws IOException {
+        elasticsearchClient.delete(d->d
+                .index("article")
+                .id(String.valueOf(id))
+                .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
 
-    public void delete(long id) {
         articleRepository.deleteById(id);
     }
 
     @Transactional //트랜잭션 시작, 메서드 종료되면 트랜잭션이 커밋 or 롤백됨 - 일관성과 무결성을 유지
-    public Article update(long id, UpdateArticleRequest request){
+    public Article update(long id, UpdateArticleRequest request) throws IOException {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
         article.update(request.getTitle(), request.getContent());
+
+        elasticsearchClient.index(i->i
+                .index("article")
+                .id(String.valueOf(id))
+                .document(request.toDocument())
+                .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
+
         return article;
     }
 

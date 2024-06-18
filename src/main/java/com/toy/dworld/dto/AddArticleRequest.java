@@ -20,6 +20,8 @@ public class AddArticleRequest {
 
     @NotNull
     private String content;
+    @NotNull
+    private String author;
 
     public Article toEntity(String author){
         return Article.builder()
