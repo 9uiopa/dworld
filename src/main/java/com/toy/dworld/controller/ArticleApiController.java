@@ -53,13 +53,13 @@ public class ArticleApiController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteArticle(@PathVariable long id){
+    public ResponseEntity<Void> deleteArticle(@PathVariable long id) throws IOException {
         articleService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Article> updateArticle(@PathVariable long id, @RequestBody UpdateArticleRequest request){
+    public ResponseEntity<Article> updateArticle(@PathVariable long id, @RequestBody UpdateArticleRequest request) throws IOException {
         Article updatedArticle = articleService.update(id, request);
         return ResponseEntity.ok().body(updatedArticle);
     }
