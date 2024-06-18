@@ -38,7 +38,7 @@ dependencies {
     implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
 
     // EL (Expression Language) 지원을 위한 라이브러리
-    implementation 'org.glassfish:jakarta.el:3.0.3'
+    implementation 'org.glassfish:jakarta.el:4.0.2'
 
     // Elasticsearch와 호환되는 Spring Data Elasticsearch 버전 설정
     implementation 'org.springframework.data:spring-data-elasticsearch:4.4.2'

@@ -1,6 +1,7 @@
 package com.toy.dworld.dto;
 
 import com.toy.dworld.entity.Article;
+import com.toy.dworld.entity.ArticleIndex;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,14 @@ public class AddArticleRequest {
 
     public Article toEntity(String author){
         return Article.builder()
+                .title(title)
+                .content(content)
+                .author(author)
+                .build();
+    }
+
+    public ArticleIndex toDocument(String author){
+        return ArticleIndex.builder()
                 .title(title)
                 .content(content)
                 .author(author)

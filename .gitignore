@@ -39,3 +39,6 @@ out/
 ### private ###
 .env
 /mysqldb/mysql.sock
+
+### elastic search volume###
+elasticsearchdb/
