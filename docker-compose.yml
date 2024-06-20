@@ -43,8 +43,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes: # 로컬 폴더를 volume 으로 사용
-      - ./elasticsearchdb:/usr/share/elasticsearch/data
     networks:
       - app-network
 
