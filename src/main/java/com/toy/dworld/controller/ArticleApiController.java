@@ -65,8 +65,8 @@ public class ArticleApiController {
     }
 
     // 게시물 검색
-    @GetMapping(params = "keyword")
-    public List<ArticleIndex> searchArticles(@RequestParam String keyword) throws IOException {
+    @GetMapping(params = "query")
+    public List<ArticleIndex> searchArticles(@RequestParam(name = "query") String keyword) throws IOException {
         SearchResponse<ArticleIndex> searchResponse = articleService.searchArticles(keyword);
         List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
 
