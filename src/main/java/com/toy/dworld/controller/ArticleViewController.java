@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -54,6 +54,17 @@ public class ArticleViewController {
                 .toList();
         model.addAttribute("articles",articles);
         return "articleList";
+    }
+
+    @GetMapping("/new-article")
+    public String newArticle(@RequestParam(required = false) Long id, Model model){
+        if (id == null){
+            model.addAttribute("article", new ArticleViewResponse());
+        } else {
+            Optional<Article> article = articleService.findById(id);
+            model.addAttribute("article", new ArticleViewResponse(article.orElseThrow()));
+        }
+        return  "newArticle";
     }
 
 }

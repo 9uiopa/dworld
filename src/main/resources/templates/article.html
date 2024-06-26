@@ -8,7 +8,7 @@
 <body>
 <div class="p-5 mb-5 text-center</> bg-light">
     <h1 class="mb-3">D-world</h1>
-    <h4 class="mb-3">D-world에 오신 것을 환영합니다.</h4>
+    <a href="/articles">D-world에 오신 것을 환영합니다.</a>
 </div>
 
 <div class="container mt-5">
@@ -19,7 +19,7 @@
                 <header class="mb-4">
                     <h1 class="fw-bolder mb-1" th:text="${article.title}"></h1>
 <!--                    <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>-->
-<!--                    <div class="text" th:text="'작성자 : ' + ${article.author}"></div>-->
+                    <div class="text" th:text="'작성자 : ' + ${article.author}"></div>
                 </header>
                 <section class="mb-5">
                     <p class="fs-5 mb-4" th:text="${article.content}"></p>
