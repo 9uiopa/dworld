@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -71,8 +72,12 @@ public class ArticleApiController {
         List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
 
         return listOfHits.stream()
-                .map(Hit::source)
-                .collect(Collectors.toList());
+                .map(hit -> {
+                    ArticleIndex article = hit.source(); // 기존 ArticleIndex 객체
+                    Objects.requireNonNull(article).setId(Long.parseLong(hit.id())); // Hit에서 ID 값을 설정
+                    return article;
+                })
+                .toList();
     }
 
 
