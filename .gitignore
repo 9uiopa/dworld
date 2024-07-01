@@ -40,5 +40,6 @@ out/
 .env
 /mysqldb/mysql.sock
 
-### elastic search volume###
+### volume###
 elasticsearchdb/
+mysqldb/
