@@ -9,12 +9,13 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306" # 로컬 3306 접근시 컨테이너 3306 port로 이동
-    volumes: # 로컬 폴더를 volume 으로 사용
-      - ./mysqldb:/var/lib/mysql
+    volumes: # 도커 볼륨
+      - mysqldb:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - app-network
     restart: always
+
 
   web: # 서비스 이름 : web
     build: .
@@ -38,7 +39,6 @@ services:
       - '9200:9200'
     environment:
       - discovery.type=single-node
-      - xpack.security.http.filter.enabled=false
     ulimits:
       memlock:
         soft: -1
@@ -59,3 +59,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysqldb:
