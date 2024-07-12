@@ -27,38 +27,35 @@
 
 <div class="container">
     <div id="data-container" class="row-6">
-        <div th:each="item : ${articlePage.content}" class="d-flex justify-content-start align-items-center mb-2">
-            <a th:text="${item.title}" th:href="@{/articles/{id}(id=${item.id})}" class="text-decoration-none">글 제목</a>
+        <div th:each="article : ${articlePage.content}" class="d-flex justify-content-start align-items-center mb-2">
+            <a th:text="${article.title}" th:href="@{/articles/{id}(id=${article.id})}" class="text-decoration-none">글 제목</a>
         </div>
     </div>
-    <button type="button" id="create-btn"
-            onclick="location.href='/new-article'"
-            class="btn btn-secondary btn-sm mb-3">글 쓰기</button>
-    <nav aria-label="Index Page navigation" th:if="${articlePage.totalPages > 0}">
+    <nav aria-label="Search Page navigation" th:if="${articlePage.totalPages > 0}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${articlePage.hasPrevious()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(page=1)}" aria-label="First">
+                <a class="page-link" th:href="@{/articles(query=${keyword}, page=1)}" aria-label="First">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <li class="page-item" th:classappend="${articlePage.hasPrevious()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(page=${currentPage - 1})}" aria-label="Previous">
+                <a class="page-link" th:href="@{/articles(query=${keyword}, page=${currentPage - 1})}" aria-label="Previous">
                     <span aria-hidden="true">&lsaquo;</span>
                 </a>
             </li>
 
-            <li class="page-item" th:each="i : ${#numbers.sequence((currentPage > 4 ? currentPage - 4 : 1), (currentPage + 4 > articlePage.totalPages ? articlePage.totalPages : currentPage + 4))}"
+            <li class="page-item" th:each="i : ${#numbers.sequence((currentPage > 4 ? currentPage - 4 : 1), (currentPage + 4 > articlePage.totalPages ? (articlePage.totalPages) : currentPage + 4))}"
                 th:classappend="${i == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/articles(page=${i})}" th:text="${i}">1</a>
+                <a class="page-link" th:href="@{/articles(query=${keyword}, page=${i})}" th:text="${i}">1</a>
             </li>
 
             <li class="page-item" th:classappend="${articlePage.hasNext()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(page=${currentPage + 1})}" aria-label="Next">
+                <a class="page-link" th:href="@{/articles(query=${keyword}, page=${currentPage + 1})}" aria-label="Next">
                     <span aria-hidden="true">&rsaquo;</span>
                 </a>
             </li>
             <li class="page-item" th:classappend="${articlePage.hasNext()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(page=${articlePage.totalPages})}" aria-label="Last">
+                <a class="page-link" th:href="@{/articles(query=${keyword}, page=${articlePage.totalPages})}" aria-label="Last">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

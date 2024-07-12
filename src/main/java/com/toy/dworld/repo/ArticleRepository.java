@@ -1,4 +1,4 @@
-package com.toy.dworld.repo.jpa;
+package com.toy.dworld.repo;
 
 import com.toy.dworld.entity.Article;
 import org.springframework.data.jpa.repository.JpaRepository;

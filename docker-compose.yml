@@ -39,13 +39,14 @@ services:
       - '9200:9200'
     environment:
       - discovery.type=single-node
+    volumes: # 도커 볼륨
+      - elasticsearchdb:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         soft: -1
         hard: -1
     networks:
       - app-network
-
 
   kibana:
     image: kibana:7.17.9
@@ -62,3 +63,4 @@ networks:
 
 volumes:
   mysqldb:
+  elasticsearchdb:

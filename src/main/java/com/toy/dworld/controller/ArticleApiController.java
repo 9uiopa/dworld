@@ -33,18 +33,6 @@ public class ArticleApiController {
                 .body(newArticle);
     }
 
-
-    @GetMapping
-    public ResponseEntity<List<ArticleResponse>> findAllArticles(){
-        List<ArticleResponse> articles = articleService.findAll()
-                .stream()
-                .map(ArticleResponse::new) // from List<Article> to List<ArticleResponse>
-                .toList();
-
-        return ResponseEntity.ok()
-                .body(articles);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id){
         Optional<Article> article = articleService.findById(id);
@@ -65,19 +53,19 @@ public class ArticleApiController {
     }
 
     // 게시물 검색
-    @GetMapping(params = "query")
-    public List<ArticleIndex> searchArticles(@RequestParam(name = "query") String keyword) throws IOException {
-        SearchResponse<ArticleIndex> searchResponse = articleService.searchArticles(keyword);
-        List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
-
-        return listOfHits.stream()
-                .map(hit -> {
-                    ArticleIndex article = hit.source(); // 기존 ArticleIndex 객체
-                    Objects.requireNonNull(article).setId(Long.parseLong(hit.id())); // Hit에서 ID 값을 설정
-                    return article;
-                })
-                .toList();
-    }
+//    @GetMapping(params = "query")
+//    public List<ArticleIndex> searchArticles(@RequestParam(name = "query") String keyword) throws IOException {
+//        SearchResponse<ArticleIndex> searchResponse = articleService.searchArticles(keyword);
+//        List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
+//
+//        return listOfHits.stream()
+//                .map(hit -> {
+//                    ArticleIndex article = hit.source(); // 기존 ArticleIndex 객체
+//                    Objects.requireNonNull(article).setId(Long.parseLong(hit.id())); // Hit에서 ID 값을 설정
+//                    return article;
+//                })
+//                .toList();
+//    }
 
 
 

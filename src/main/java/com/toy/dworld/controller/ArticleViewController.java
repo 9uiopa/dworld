@@ -2,12 +2,14 @@ package com.toy.dworld.controller;
 
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import com.toy.dworld.dto.ArticleListViewResponse;
+import com.toy.dworld.Constants;
 import com.toy.dworld.dto.ArticleViewResponse;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,52 +21,52 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.toy.dworld.Constants.PAGE_SIZE;
+
 @RequiredArgsConstructor
 @Controller
 public class ArticleViewController {
     private final ArticleService articleService;
 
     @GetMapping("/articles")
-    public String getArticles(Model model){
-        List<ArticleListViewResponse> articles = articleService.findAll().stream()
-                .map(ArticleListViewResponse::new)
-                .toList();
-        model.addAttribute("articles",articles);
+    public String getArticles(Model model,
+                              @RequestParam(name = "page", defaultValue = "1") int page) {
+        Page<Article> articlePage = articleService.getArticles(page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
+        model.addAttribute("articlePage", articlePage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", PAGE_SIZE);
         return "articleList";
     }
 
     @GetMapping("/articles/{id}")
-    public String getArticle(@PathVariable Long id, Model model){
+    public String getArticle(@PathVariable Long id, Model model) {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", new ArticleViewResponse(article));
 
         return "article";
     }
 
-    @GetMapping(value = "/articles",params = "query")
-    public String searchArticles(@RequestParam(name = "query") String keyword, Model model) throws IOException {
-        SearchResponse<ArticleIndex> searchResponse = articleService.searchArticles(keyword);
-        List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
-        List<ArticleIndex> articles = listOfHits.stream()
-                .map(hit -> {
-                    ArticleIndex article = hit.source(); // 기존 ArticleIndex 객체
-                    Objects.requireNonNull(article).setId(Long.parseLong(hit.id())); // Hit에서 ID 값을 설정
-                    return article;
-                })
-                .toList();
-        model.addAttribute("articles",articles);
-        return "articleList";
+    @GetMapping(value = "/articles", params = "query")
+    public String searchArticles(@RequestParam(name = "query") String keyword,
+                                 @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException {
+        Page<ArticleIndex> articlePage = articleService.searchArticles(keyword, page-1, PAGE_SIZE);
+
+        model.addAttribute("articlePage", articlePage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", PAGE_SIZE);
+        model.addAttribute("keyword", keyword);  // keyword를 모델에 추가
+        return "searchResult";
     }
 
     @GetMapping("/new-article")
-    public String newArticle(@RequestParam(required = false) Long id, Model model){
-        if (id == null){
+    public String newArticle(@RequestParam(required = false) Long id, Model model) {
+        if (id == null) {
             model.addAttribute("article", new ArticleViewResponse());
         } else {
             Optional<Article> article = articleService.findById(id);
             model.addAttribute("article", new ArticleViewResponse(article.orElseThrow()));
         }
-        return  "newArticle";
+        return "newArticle";
     }
 
 }

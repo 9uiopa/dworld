@@ -21,3 +21,5 @@ logging:
       springframework:
         data:
           elasticsearch: DEBUG
+      elasticsearch:
+        client: DEBUG
