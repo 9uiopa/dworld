@@ -6,34 +6,31 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-<div class="p-5 mb-5 text-center</> bg-light">
-    <h1 class="mb-3">D-world</h1>
-    <a href="/articles">D-world에 오신 것을 환영합니다.</a>
-</div>
-
 <div class="container mt-5">
+    <div th:replace="fragments/header :: header"></div>
     <div class="row">
         <div class="col-lg-8">
             <article>
                 <input type="hidden" id="article-id" th:value="${article.id}">
                 <header class="mb-4">
                     <h1 class="fw-bolder mb-1" th:text="${article.title}"></h1>
-<!--                    <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>-->
+                    <!--                    <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>-->
                     <div class="text" th:text="'작성자 : ' + ${article.author}"></div>
                 </header>
                 <section class="mb-5">
                     <p class="fs-5 mb-4" th:text="${article.content}"></p>
                 </section>
-<!--                <button type="button" id="modify-btn"-->
-<!--                        th:if="${article.author} == ${#authentication.principal.username}"-->
-<!--                        th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"-->
-<!--                        class="btn btn-primary btn-sm">수정</button>-->
-<!--                <button type="button" id="delete-btn"-->
-<!--                        th:if="${article.author} == ${#authentication.principal.username}"-->
-<!--                        class="btn btn-secondary btn-sm">삭제</button>-->
+                <!--                <button type="button" id="modify-btn"-->
+                <!--                        th:if="${article.author} == ${#authentication.principal.username}"-->
+                <!--                        th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"-->
+                <!--                        class="btn btn-primary btn-sm">수정</button>-->
+                <!--                <button type="button" id="delete-btn"-->
+                <!--                        th:if="${article.author} == ${#authentication.principal.username}"-->
+                <!--                        class="btn btn-secondary btn-sm">삭제</button>-->
                 <button type="button" id="list-btn"
                         th:onclick="|location.href='@{/articles}'|"
-                        class="btn btn-secondary btn-sm">글 목록</button>
+                        class="btn btn-secondary btn-sm">글 목록
+                </button>
             </article>
         </div>
     </div>
@@ -50,13 +47,14 @@
     this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
     */
-    (function() { // DON'T EDIT BELOW THIS LINE
+    (function () { // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
         s.src = 'https://d-world.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+    Disqus.</a></noscript>
 <script src="/js/article.js"></script>
 </body>
