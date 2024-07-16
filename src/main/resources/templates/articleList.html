@@ -9,25 +9,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
 </head>
 <body>
-<div class="p-5 mb-5 text-center</> bg-light">
-    <h1 class="mb-3">D-world</h1>
-    <a href="/articles">D-world에 오신 것을 환영합니다.</a>
-    <div class="d-flex justify-content-between align-items-center">
-        <ul class="nav category-nav">
-            <li class="nav-item"><a href="/articles?category=free" class="nav-link">자유</a></li>
-            <li class="nav-item"><a href="/articles?category=humor" class="nav-link">유머</a></li>
-            <li class="nav-item"><a href="/articles?category=game" class="nav-link">게임</a></li>
-        </ul>
-        <form action="/articles" method="GET">
-            <label>
-                <input type="text" name="query" placeholder="제목 or 글 내용 검색" required>
-            </label>
-            <button type="submit">검색</button>
-        </form>
-    </div>
-</div>
-
 <div class="container">
+    <div class="p-4 mb-5 mt-5 text-center</> bg-light">
+        <h1 class="mb-3">D-world</h1>
+        <a href="/articles">D-world에 오신 것을 환영합니다.</a>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <ul class="nav category-nav">
+                <li class="nav-item"><a href="/articles?category=free" class="nav-link">자유</a></li>
+                <li class="nav-item"><a href="/articles?category=humor" class="nav-link">유머</a></li>
+                <li class="nav-item"><a href="/articles?category=game" class="nav-link">게임</a></li>
+            </ul>
+            <form action="/articles" method="GET">
+                <label>
+                    <input type="text" name="query" placeholder="제목 or 글 내용 검색" required>
+                </label>
+                <button type="submit">검색</button>
+            </form>
+        </div>
+    </div>
     <div id="data-container" class="row-6">
         <div th:each="item : ${articlePage.content}" class="d-flex justify-content-start align-items-center mb-2">
             <a th:text="${item.title}" th:href="@{/articles/{id}(id=${item.id})}" class="text-decoration-none">글 제목</a>
