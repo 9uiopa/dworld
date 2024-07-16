@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>D-world 웹 커뮤니티</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
 </head>
@@ -12,10 +13,11 @@
     <h1 class="mb-3">D-world</h1>
     <a href="/articles">D-world에 오신 것을 환영합니다.</a>
     <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <span>메뉴1</span>
-            <span>메뉴2</span>
-        </div>
+        <ul class="nav category-nav">
+            <li class="nav-item"><a href="/articles?category=free" class="nav-link">자유</a></li>
+            <li class="nav-item"><a href="/articles?category=humor" class="nav-link">유머</a></li>
+            <li class="nav-item"><a href="/articles?category=game" class="nav-link">게임</a></li>
+        </ul>
         <form action="/articles" method="GET">
             <label>
                 <input type="text" name="query" placeholder="제목 or 글 내용 검색" required>
