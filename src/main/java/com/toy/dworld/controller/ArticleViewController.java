@@ -1,15 +1,11 @@
 package com.toy.dworld.controller;
 
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-import co.elastic.clients.elasticsearch.core.search.Hit;
-import com.toy.dworld.Constants;
 import com.toy.dworld.dto.ArticleViewResponse;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.toy.dworld.Constants.PAGE_SIZE;
@@ -35,7 +29,7 @@ public class ArticleViewController {
         model.addAttribute("articlePage", articlePage);
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", PAGE_SIZE);
-        return "articleList";
+        return "articles/articleList";
     }
 
     @GetMapping("/articles/{id}")
@@ -43,7 +37,7 @@ public class ArticleViewController {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", new ArticleViewResponse(article));
 
-        return "article";
+        return "articles/article";
     }
 
     @GetMapping(value = "/articles", params = "query")
@@ -55,7 +49,7 @@ public class ArticleViewController {
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", PAGE_SIZE);
         model.addAttribute("keyword", keyword);  // keyword를 모델에 추가
-        return "searchResult";
+        return "articles/searchResult";
     }
 
     @GetMapping("/new-article")
@@ -66,7 +60,7 @@ public class ArticleViewController {
             Optional<Article> article = articleService.findById(id);
             model.addAttribute("article", new ArticleViewResponse(article.orElseThrow()));
         }
-        return "newArticle";
+        return "articles/newArticle";
     }
 
 }
