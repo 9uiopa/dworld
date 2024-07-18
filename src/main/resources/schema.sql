@@ -1,4 +1,4 @@
-create table IF NOT EXISTS boardtype
+create table IF NOT EXISTS board_type
 (
     id bigint auto_increment primary key,
     name varchar(255) not null

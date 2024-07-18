@@ -33,7 +33,11 @@ public class ArticleViewController {
         model.addAttribute("pageSize", PAGE_SIZE);
         model.addAttribute("boardType",boardType);
 
-        return "articles/articleList";
+        if (boardType == 1){
+            return "articles/hotArticleList";
+        }else{
+            return "articles/articleList";
+        }
     }
 
 //    @GetMapping("/articles")
@@ -69,15 +73,17 @@ public class ArticleViewController {
 
 
     @GetMapping("/new-article")
-    public String newArticle(@RequestParam(required = false) Long id,
+    public String articleForm(@RequestParam(required = false) Long id,
                              @RequestParam(name = "boardType", required = true) Long boardTypeId  ,Model model) {
-        if (id == null) {
+        if (id == null) { // 새 게시글
+            BoardType boardType = boardTypeService.findById(boardTypeId).orElseThrow();
+            model.addAttribute("boardName", boardType.getName());
+            model.addAttribute("boardTypeId", boardTypeId);
             model.addAttribute("article", new ArticleViewResponse());
-        } else {
+        } else { // 게시글 수정
             Optional<Article> article = articleService.findById(id);
             model.addAttribute("article", new ArticleViewResponse(article.orElseThrow()));
-            BoardType boardType = boardTypeService.findById(boardTypeId).orElseThrow();
-            model.addAttribute("boardType", boardType.getName());
+
         }
         return "articles/newArticle";
     }

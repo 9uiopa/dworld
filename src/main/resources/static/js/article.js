@@ -51,6 +51,8 @@ const createButton = document.getElementById('create-btn');
 
 if (createButton) {
     createButton.addEventListener('click', event => {
+        let boardTypeId = document.getElementById('boardType-id').value
+
         fetch('/api/articles', {
             method: 'POST',
             headers: {
@@ -60,12 +62,16 @@ if (createButton) {
                 title: document.getElementById('title').value,
                 content: document.getElementById('content').value,
                 author: document.getElementById('article-author').value,
-                boardType_id: document.getElementById('boardType').innerText
+                boardType_id: boardTypeId
             })
         })
             .then(() => {
                 alert('등록 완료되었습니다.');
-                location.replace('/articles');
-            });
+                location.replace(`/articles?boardType=${boardTypeId}`);
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                alert('등록에 실패했습니다. 다시 시도해주세요.');
+                });
     });
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>D-world 웹 커뮤니티</title>
@@ -16,10 +16,11 @@
                 <!-- 아이디 정보 저장-->
                 <input type="hidden" id="article-id" th:value="${article.id}">
                 <input type="hidden" id="article-author" value="author">
+                <input type="hidden" id="boardType-id" th:value="${boardTypeId}">
                 <!--<input type="hidden" id="article-author" th:value="${#authentication.principal.username}">-->
 
                 <header class="mb-4">
-                    <h3 id="boardType" th:text="${boardType}">게시판 종류</h3>
+                    <h3 id="boardType" th:text="${boardName}">게시판 종류</h3>
                     <input type="text" class="form-control" placeholder="제목" id="title" th:value="${article.title}">
                 </header>
                 <section class="mb-5">

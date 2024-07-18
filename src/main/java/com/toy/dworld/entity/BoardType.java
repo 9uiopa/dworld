@@ -1,9 +1,6 @@
 package com.toy.dworld.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data // 자동으로 getter, setter, equals, hashCode, toString 등의 메서드를 생성
 @Entity
+@Table(name = "board_type")
 public class BoardType {
 
     @Id
