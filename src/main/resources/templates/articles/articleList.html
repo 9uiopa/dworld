@@ -17,7 +17,7 @@
         </div>
     </div>
     <button type="button" id="create-btn"
-            onclick="location.href='/new-article'"
+            th:onclick="|location.href='/new-article?boardType=${boardType}';|"
             class="btn btn-secondary btn-sm mb-3">글 쓰기</button>
     <nav aria-label="Index Page navigation" th:if="${articlePage.totalPages > 0}">
         <ul class="pagination justify-content-center">

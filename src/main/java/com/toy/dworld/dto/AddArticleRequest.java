@@ -22,12 +22,15 @@ public class AddArticleRequest {
     private String content;
     @NotNull
     private String author;
+    @NotNull
+    private Long boardType_id;
 
     public Article toEntity(String author){
         return Article.builder()
                 .title(title)
                 .content(content)
                 .author(author)
+                .boardTypeId(boardType_id)
                 .build();
     }
 
@@ -36,6 +39,7 @@ public class AddArticleRequest {
                 .title(title)
                 .content(content)
                 .author(author)
+                .boardTypeId(boardType_id)
                 .build();
     }
 }

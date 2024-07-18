@@ -24,22 +24,22 @@ public class Article {
     private String content;
     @Column(name = "author" , nullable = false)
     private String author;
-
-    @Builder
-    public Article(String title, String content, String author){
-        this.title = title;
-        this.content = content;
-        this.author = author;
-    }
-
+    @Column(name = "boardtype_id" , nullable = false)
+    private Long boardTypeId;
     @CreatedDate
     @Column(name = "created")
     private LocalDateTime createdAt;
-
     @LastModifiedDate
     @Column(name = "updated")
     private LocalDateTime updatedAt;
 
+    @Builder
+    public Article(String title, String content, String author,Long boardTypeId){
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.boardTypeId = boardTypeId;
+    }
     public void update(String title, String content){
         this.title = title;
         this.content = content;

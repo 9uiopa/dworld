@@ -59,7 +59,8 @@ if (createButton) {
             body: JSON.stringify({
                 title: document.getElementById('title').value,
                 content: document.getElementById('content').value,
-                author: document.getElementById('article-author').value
+                author: document.getElementById('article-author').value,
+                boardType_id: document.getElementById('boardType').value
             })
         })
             .then(() => {

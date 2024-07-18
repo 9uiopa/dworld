@@ -1,6 +1,7 @@
 package com.toy.dworld.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class ArticleIndex {
     private String title;
     private String content;
     private String author;
+    private Long boardTypeId;
 
 }

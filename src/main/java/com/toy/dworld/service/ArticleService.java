@@ -46,8 +46,10 @@ public class ArticleService {
         return newArticle;
     }
 
-    public Page<Article> getArticles(int page, int size) {
-        return articleRepository.findAll(PageRequest.of(page, size));
+    public Page<Article> getArticlesByBoardType(long boardTypeId,int page, int size) {
+
+        return articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size));
+
     }
 
     public Optional<Article> findById(long id) {

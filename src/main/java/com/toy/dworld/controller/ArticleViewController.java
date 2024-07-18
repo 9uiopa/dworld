@@ -3,7 +3,9 @@ package com.toy.dworld.controller;
 import com.toy.dworld.dto.ArticleViewResponse;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.ArticleIndex;
+import com.toy.dworld.entity.BoardType;
 import com.toy.dworld.service.ArticleService;
+import com.toy.dworld.service.BoardTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,22 +23,35 @@ import static com.toy.dworld.Constants.PAGE_SIZE;
 @Controller
 public class ArticleViewController {
     private final ArticleService articleService;
-
-    @GetMapping("/articles")
-    public String getArticles(Model model,
-                              @RequestParam(name = "page", defaultValue = "1") int page) {
-        Page<Article> articlePage = articleService.getArticles(page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
+    private final BoardTypeService boardTypeService;
+    @GetMapping(value = "/articles")
+    public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardType,
+                                        @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException{
+        Page<Article> articlePage = articleService.getArticlesByBoardType(boardType,page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
         model.addAttribute("articlePage", articlePage);
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", PAGE_SIZE);
+        model.addAttribute("boardType",boardType);
+
         return "articles/articleList";
     }
+
+//    @GetMapping("/articles")
+//    public String getArticles(Model model,
+//                              @RequestParam(name = "page", defaultValue = "1") int page) {
+//        Page<Article> articlePage = articleService.getArticles(page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
+//        model.addAttribute("articlePage", articlePage);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("pageSize", PAGE_SIZE);
+//        return "articles/articleList";
+//    }
 
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", new ArticleViewResponse(article));
-
+        String boardType = boardTypeService.findById(article.getBoardTypeId()).orElseThrow().getName();
+        model.addAttribute("boardType",boardType);
         return "articles/article";
     }
 
@@ -52,13 +67,17 @@ public class ArticleViewController {
         return "articles/searchResult";
     }
 
+
     @GetMapping("/new-article")
-    public String newArticle(@RequestParam(required = false) Long id, Model model) {
+    public String newArticle(@RequestParam(required = false) Long id,
+                             @RequestParam(name = "boardType", required = true) Long boardTypeId  ,Model model) {
         if (id == null) {
             model.addAttribute("article", new ArticleViewResponse());
         } else {
             Optional<Article> article = articleService.findById(id);
             model.addAttribute("article", new ArticleViewResponse(article.orElseThrow()));
+            BoardType boardType = boardTypeService.findById(boardTypeId).orElseThrow();
+            model.addAttribute("boardType", boardType.getName());
         }
         return "articles/newArticle";
     }
