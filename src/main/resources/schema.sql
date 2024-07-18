@@ -3,6 +3,8 @@ create table IF NOT EXISTS board_type
     id bigint auto_increment primary key,
     name varchar(255) not null
 );
+ALTER TABLE board_type ADD CONSTRAINT unique_name UNIQUE (name);
+
 
 create table IF NOT EXISTS article
 (

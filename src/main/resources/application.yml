@@ -1,10 +1,12 @@
 spring:
   jpa:
     show-sql: true # 쿼리 확인
+    defer-datasource-initialization: true #  데이터베이스 초기화 스크립트가 JPA 엔티티 설정이 완료된 후에 실행되도록
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+        ddl-auto: update # 로컬 db 스키마를 JPA 엔티티와 일치하도록 생성하거나 수정해준다.
 
   datasource:
     url: jdbc:mysql://db:3306/${MYSQL_DATABASE} # 'db'는 컨테이너 이름. 로컬 db를 쓸 때는 localhost
