@@ -24,7 +24,7 @@ public class Article {
     private String content;
     @Column(name = "author" , nullable = false)
     private String author;
-    @Column(name = "boardtype_id" , nullable = false)
+    @Column(name = "board_type_id" , nullable = false)
     private Long boardTypeId;
     @CreatedDate
     @Column(name = "created")

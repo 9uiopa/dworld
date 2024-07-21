@@ -18,6 +18,5 @@ public class ArticleViewResponse {
         this.content = article.getContent();
         this.author = article.getAuthor();
 
-
     }
 }

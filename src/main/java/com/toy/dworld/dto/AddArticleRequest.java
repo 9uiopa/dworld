@@ -17,20 +17,19 @@ public class AddArticleRequest {
     @NotNull
     @Size(min=1, max = 15)
     private String title;
-
     @NotNull
     private String content;
     @NotNull
     private String author;
     @NotNull
-    private Long boardType_id;
+    private Long boardTypeId;
 
     public Article toEntity(String author){
         return Article.builder()
                 .title(title)
                 .content(content)
                 .author(author)
-                .boardTypeId(boardType_id)
+                .boardTypeId(boardTypeId)
                 .build();
     }
 
@@ -39,7 +38,7 @@ public class AddArticleRequest {
                 .title(title)
                 .content(content)
                 .author(author)
-                .boardTypeId(boardType_id)
+                .boardTypeId(boardTypeId)
                 .build();
     }
 }
