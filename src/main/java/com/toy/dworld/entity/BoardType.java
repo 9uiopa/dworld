@@ -2,6 +2,7 @@ package com.toy.dworld.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,12 @@ public class BoardType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
+
+    @Builder
+    public BoardType(Long id){
+        this.id = id;
+    }
 
 }

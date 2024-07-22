@@ -9,8 +9,12 @@ import com.toy.dworld.entity.Article;
 import com.toy.dworld.dto.AddArticleRequest;
 import com.toy.dworld.dto.UpdateArticleRequest;
 import com.toy.dworld.entity.ArticleIndex;
+import com.toy.dworld.entity.BoardType;
+import com.toy.dworld.entity.User;
 import com.toy.dworld.repo.ArticleIndexRepository;
 import com.toy.dworld.repo.ArticleRepository;
+import com.toy.dworld.repo.BoardTypeRepository;
+import com.toy.dworld.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,15 +35,20 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleIndexRepository articleIndexRepository;
     private final ElasticsearchClient elasticsearchClient;
+    private final UserRepository userRepository;
+    private final BoardTypeRepository boardTypeRepository;
 
-    public Article save(AddArticleRequest request, String userName) throws IOException {
-        // jpa 레코드 삽입
-        Article newArticle = articleRepository.save(request.toEntity(userName));
+    public Article save(AddArticleRequest request, String username) throws IOException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        BoardType boardType = boardTypeRepository.findById(request.getBoardTypeId())
+                .orElseThrow(() -> new RuntimeException("Board type not found"));
+        Article newArticle = articleRepository.save(request.toEntity(user,boardType));
 
-        //es index에 document 저장
+        //elasticsearch index: document 저장
         elasticsearchClient.index(i -> i
                 .index("article")
-                .document(request.toDocument(userName))
+                .document(request.toDocument(username))
                 .id(newArticle.getId().toString())
                 .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
         // jpa 레코드 삽입

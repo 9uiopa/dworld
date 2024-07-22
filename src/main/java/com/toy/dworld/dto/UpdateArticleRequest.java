@@ -16,7 +16,7 @@ public class UpdateArticleRequest {
         return ArticleIndex.builder()
                 .title(title)
                 .content(content)
-                .author(author)
+                .username(author)
                 .build();
     }
 }

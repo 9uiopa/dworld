@@ -54,8 +54,8 @@ public class ArticleViewController {
     public String getArticle(@PathVariable Long id, Model model) {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", new ArticleViewResponse(article));
-        String boardType = boardTypeService.findById(article.getBoardTypeId()).orElseThrow().getName();
-        model.addAttribute("boardType",boardType);
+        String boardTypeName = article.getBoardType().getName();
+        model.addAttribute("boardType",boardTypeName);
         return "articles/article";
     }
 

@@ -20,7 +20,7 @@ public class ArticleIndex {
     private Long id;
     private String title;
     private String content;
-    private String author;
+    private String username;
     private Long boardTypeId;
 
 }

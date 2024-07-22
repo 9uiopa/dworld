@@ -1,7 +1,6 @@
 package com.toy.dworld.dto;
 
 import com.toy.dworld.entity.Article;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ public class ArticleViewResponse {
         this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.author = article.getAuthor();
-
+        this.author = article.getUser().getUsername();
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @SpringBootApplication
 public class DworldApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(DworldApplication.class, args);
     }

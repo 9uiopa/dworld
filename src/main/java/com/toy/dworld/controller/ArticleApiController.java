@@ -28,7 +28,7 @@ public class ArticleApiController {
 
     @PostMapping
     public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request) throws IOException {
-        Article newArticle = articleService.save(request, "author");
+        Article newArticle = articleService.save(request, "오유리");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newArticle);
     }
