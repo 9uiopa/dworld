@@ -1,6 +1,7 @@
 package com.toy.dworld.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,13 +10,14 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false) // name : 이 컬럼 이름, 참조하는 컬럼은 참조하는 엔티티의 기본키(변경 가능)
+    @JoinColumn(name = "article_id", nullable = false) // name : 컬럼 이름, 참조 컬럼은 참조하는 엔티티의 기본키(변경 가능)
     private Article article;
 
     @ManyToOne
@@ -23,7 +25,7 @@ public class Comment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "parent_comment_id")
+    @JoinColumn(name = "parent_comment_id", nullable = true)
     private Comment parentComment;
 
     private String content;
@@ -32,4 +34,15 @@ public class Comment {
     private LocalDateTime createdAt = LocalDateTime.now();
 
 
+    @Builder
+    public Comment(String content, Article article, User user,Comment parentComment){
+        this.content = content;
+        this.article = article;
+        this.user = user;
+        this.parentComment = parentComment;
+    }
+    public void update(String content){
+        this.content = content;
+
+    }
 }

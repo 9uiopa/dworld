@@ -1,12 +1,10 @@
 package com.toy.dworld.controller;
 
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-import co.elastic.clients.elasticsearch.core.search.Hit;
+
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.dto.AddArticleRequest;
 import com.toy.dworld.dto.ArticleResponse;
 import com.toy.dworld.dto.UpdateArticleRequest;
-import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequestMapping("/api/articles")

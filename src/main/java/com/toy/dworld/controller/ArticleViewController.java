@@ -4,8 +4,10 @@ import com.toy.dworld.dto.ArticleViewResponse;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.entity.BoardType;
+import com.toy.dworld.entity.Comment;
 import com.toy.dworld.service.ArticleService;
 import com.toy.dworld.service.BoardTypeService;
+import com.toy.dworld.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static com.toy.dworld.Constants.PAGE_SIZE;
@@ -24,6 +27,7 @@ import static com.toy.dworld.Constants.PAGE_SIZE;
 public class ArticleViewController {
     private final ArticleService articleService;
     private final BoardTypeService boardTypeService;
+    private final CommentService commentService;
     @GetMapping(value = "/articles")
     public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardType,
                                         @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException{
@@ -40,22 +44,16 @@ public class ArticleViewController {
         }
     }
 
-//    @GetMapping("/articles")
-//    public String getArticles(Model model,
-//                              @RequestParam(name = "page", defaultValue = "1") int page) {
-//        Page<Article> articlePage = articleService.getArticles(page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
-//        model.addAttribute("articlePage", articlePage);
-//        model.addAttribute("currentPage", page);
-//        model.addAttribute("pageSize", PAGE_SIZE);
-//        return "articles/articleList";
-//    }
-
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", new ArticleViewResponse(article));
         String boardTypeName = article.getBoardType().getName();
         model.addAttribute("boardType",boardTypeName);
+
+        List<Comment> comments = commentService.getCommentsByArticleId(id);
+        model.addAttribute("comments", comments);
+
         return "articles/article";
     }
 
@@ -87,5 +85,6 @@ public class ArticleViewController {
         }
         return "articles/newArticle";
     }
+
 
 }
