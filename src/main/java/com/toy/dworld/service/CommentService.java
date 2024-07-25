@@ -25,8 +25,14 @@ public class CommentService {
     public Comment addComment(long articleId, AddCommentRequest request) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("article not found"));
         User user = userRepository.findByUsername(request.getAuthor()).orElseThrow(() -> new RuntimeException("user not found"));
-        Comment parentComment = commentRepository.findById(request.getParentCommentId()).orElse(null);
-        Comment comment = request.toEntity(article, user,parentComment);
+        Long ParentCommentId = request.getParentCommentId();
+        Comment comment;
+        if(ParentCommentId==null){
+            comment = request.toEntity(article, user);
+        }else{
+            Comment parentComment = commentRepository.findById(ParentCommentId).get();
+            comment = request.toEntity(article, user,parentComment);
+        }
         commentRepository.save(comment);
         return comment;
     }

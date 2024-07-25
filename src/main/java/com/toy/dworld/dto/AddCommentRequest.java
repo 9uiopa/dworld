@@ -18,7 +18,7 @@ public class AddCommentRequest {
     private String content;
     @NotNull
     private String author;
-    private Long ParentCommentId;
+    private Long parentCommentId;
 
     public Comment toEntity(Article article, User user, Comment parentComment){
         return Comment.builder()
@@ -28,4 +28,13 @@ public class AddCommentRequest {
                 .parentComment(parentComment)
                 .build();
     }
+
+    public Comment toEntity(Article article, User user){
+        return Comment.builder()
+                .content(content)
+                .user(user)
+                .article(article)
+                .build();
+    }
+
 }

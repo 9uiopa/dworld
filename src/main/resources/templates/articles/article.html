@@ -35,27 +35,26 @@
                 <!--                <button type="button" id="delete-btn"-->
                 <!--                        th:if="${article.author} == ${#authentication.principal.username}"-->
                 <!--                        class="btn btn-secondary btn-sm">삭제</button>-->
-                <button type="button" id="list-btn"
-                        th:onclick="|location.href='@{/articles}'|"
-                        class="btn btn-secondary btn-sm">글 목록
-                </button>
+
             </article>
-            <div class="mt-5 comments-area">
+            <div class="mt-5" id="comment-area">
                 <h2>댓글</h2>
                 <div class="comments-section">
                     <!--<span class="text-secondary ms-1" id="dateValue-\${feed.id }">\${timeForToday(feed.createDate)}  fs때 덧글 작성 시간 표시</span]>-->
-                    <div class="comment" id = "comment-${comment.id}" th:each="comment : ${comments}">
-                        <input type="hidden" id="comment-author-${comment.id}" value="오유리">
+                    <div class="comment"  th:each="comment : ${comments}" th:attr="data-comment-id=${comment.id}">
+                        <input type="hidden" class="comment-author"  value="오유리">
                         <p><strong th:text="${comment.user.username}"></strong>
                             <span th:text="${comment.createdAt}"></span>
-                            <span class="badge rounded-pill text-bg-secondary comment-form-btn">대댓글</span>
+                            <span style="cursor: pointer;" class="badge rounded-pill text-bg-secondary comment-form-btn">대댓글</span>
                             <br>
                             <span th:text="${comment.content}"></span></p>
                     </div>
                 </div>
                 <div class="mt-4 comment-form">
                     <label for="comment-content"></label>
-                    <textarea class="form-control" id="comment-content" rows="3" placeholder="댓글을 입력하세요"></textarea>
+<!--                <input type="hidden" class="comment-form-author" value="${#authentication.name}">security 도입시-->
+                    <input type="hidden" class="comment-form-author" value="오유리">
+                    <textarea class="form-control comment-textarea" id="comment-content" rows="3" placeholder="댓글을 입력하세요"></textarea>
                     <button type="button" class="btn btn-primary mt-2 submit-comment-btn" id="submit-comment-btn">댓글 달기</button>
                 </div>
             </div>
