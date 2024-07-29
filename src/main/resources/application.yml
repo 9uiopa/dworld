@@ -5,7 +5,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update # 로컬 db 스키마를 JPA 엔티티와 일치하도록 생성하거나 수정해준다.
 
@@ -26,6 +26,7 @@ logging:
   level:
     org:
       springframework:
+        security: DEBUG
         data:
           elasticsearch: DEBUG
       elasticsearch:

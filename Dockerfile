@@ -17,17 +17,18 @@ COPY src ./src
 # 애플리케이션 빌드 실행
 RUN ./gradlew clean bootJar --no-daemon
 
-# 실제 런타임 이미지--------------------------------------
+# 실행 단계 ----------------------------------
+# 실제 런타임 이미지---------------------------
 FROM openjdk:17-jdk-slim
 
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# 빌드(build - 전단계에서 AS build로 정의) 단계에서 생성된 JAR 파일 복사 (컨테이너쪽 jar 파일 -> 컨테이너 app 내에 .jar로 복사)
+# build(전 단계에서 AS build로 정의) 단계에서 생성된 JAR 파일 복사 (컨테이너 jar 파일 -> 컨테이너 app 내에 .jar로 복사)
 COPY --from=build /app/build/libs/dworld.jar ./dworld.jar
 
 # 포트 노출
 EXPOSE 8080
 
-# 애플리케이션 실행 명령 설정
+# 애플리케이션 실행 명령 설정 , 애플리케이션 실행
 ENTRYPOINT ["java", "-jar", "dworld.jar"]

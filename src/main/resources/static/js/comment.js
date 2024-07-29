@@ -42,12 +42,15 @@ commentArea.addEventListener('click',ev => {
 })
 
 //대댓글 폼 추가
-const replyButtons = document.querySelectorAll('.comment-form-btn');
-replyButtons.forEach(button => {
+const childCommentsButtons = document.querySelectorAll('.comment-form-btn');
+childCommentsButtons.forEach(button => {
     button.addEventListener('click', function() {
         const commentDiv = button.closest('.comment'); // 부모 요소 (댓글 컨테이너)를 찾음
+        const childCommentDiv = commentDiv.querySelector('.childComment');
         const existingReplyForm = commentDiv.querySelector('.comment-form');
         if (!existingReplyForm) { // 기존의 답글 폼이 없으면 새로 추가
+            //다른 답글 폼 제거 (답글 폼은 1개만 표시된다)
+            commentArea.querySelectorAll('.comment-form').forEach(element => element.remove());
             // 답글 폼 생성
             const commentForm = document.createElement('div');
             commentForm.classList.add('comment-form', 'mt-2');
@@ -77,9 +80,8 @@ replyButtons.forEach(button => {
             commentForm.appendChild(textarea);
             commentForm.appendChild(submitButton);
 
-
-            // 댓글 컨테이너에 답글 폼 추가
-            commentDiv.appendChild(commentForm);
+            //대댓글보다 앞쪽에 답글 폼 추가
+            commentDiv.insertBefore(commentForm, childCommentDiv);
         }else{ // 이미 폼이 있으면 제거
             existingReplyForm.remove();
         }
