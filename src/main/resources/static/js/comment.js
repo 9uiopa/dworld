@@ -1,13 +1,12 @@
 //댓글 추가
 const commentArea = document.getElementById('comment-area');
 commentArea.addEventListener('click',ev => {
-    console.log('commentArea click event occured');
-    if (ev.target && ev.target.classList.contains('submit-comment-btn')) {
+    if (ev.target && ev.target.classList.contains('submit-comment-btn')) {// 댓글 달기 버튼 눌렀을 때
         let articleId = document.getElementById('article-id').value;
-        const commentDiv = ev.target.closest('.comment-form');
-        const textarea = commentDiv.querySelector('.comment-textarea');
-        const author = commentDiv.querySelector('.comment-form-author').value;
-        const parentComment = commentDiv.closest('.comment');
+        const commentForm = ev.target.closest('.comment-form');
+        const textarea = commentForm.querySelector('.comment-textarea');
+        const author = commentForm.querySelector('.comment-form-author').value;
+        const parentComment = commentForm.closest('.comment');
         let parentCommentId = null;
         if(parentComment){
             parentCommentId = parentComment.getAttribute('data-comment-id')

@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div id="data-container" class="row-6">
         <div th:each="article : ${articlePage.content}" class="d-flex justify-content-start align-items-center mb-2">
             <a th:text="${article.title}" th:href="@{/articles/{id}(id=${article.id})}" class="text-decoration-none">글 제목</a>

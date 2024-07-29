@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/css/style.css">
+
+</head>
+<body>
+    <div th:fragment="comment(comment)">
+        <div class="comment" th:attr="data-comment-id=${comment.id}">
+            <p><strong th:text="${comment.user.username}"></strong>
+                <span th:text="${comment.createdAt}"></span>
+                <span style="cursor: pointer;" class="badge rounded-pill text-bg-secondary comment-form-btn">대댓글</span>
+            </p>
+            <p th:text="${comment.content}"></p>
+            <div class="childComment">
+                <div th:if="${#lists.size(comment.childComments) > 0}">
+                    <div th:each="childComment : ${comment.childComments}">
+                        <div th:include="~{fragments/comments :: comment (comment=${childComment})}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container mt-5">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="row">
         <div class="col-lg-8">
             <article>
@@ -40,14 +40,8 @@
             <div class="mt-5" id="comment-area">
                 <h2>댓글</h2>
                 <div class="comments-section">
-                    <!--<span class="text-secondary ms-1" id="dateValue-\${feed.id }">\${timeForToday(feed.createDate)}  fs때 덧글 작성 시간 표시</span]>-->
-                    <div class="comment"  th:each="comment : ${comments}" th:attr="data-comment-id=${comment.id}">
-                        <input type="hidden" class="comment-author"  value="오유리">
-                        <p><strong th:text="${comment.user.username}"></strong>
-                            <span th:text="${comment.createdAt}"></span>
-                            <span style="cursor: pointer;" class="badge rounded-pill text-bg-secondary comment-form-btn">대댓글</span>
-                            <br>
-                            <span th:text="${comment.content}"></span></p>
+                    <div th:each="comment : ${comments}">
+                        <div th:replace="~{fragments/comments :: comment (comment=${comment})}"></div>
                     </div>
                 </div>
                 <div class="mt-4 comment-form">
