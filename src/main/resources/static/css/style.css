@@ -66,3 +66,24 @@ body {
 .form-inline .btn {
     border-radius: 0;
 }
+
+.comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.comment .user {
+    font-weight: bold;
+}
+.comment .timestamp {
+    color: #999;
+    font-size: 0.9em;
+}
+.comment .content {
+    margin-top: 5px;
+}
+.comment .childComment {
+    margin-top: 10px;
+    padding-left: 20px; /*대댓글 표시용 들여쓰기*/
+}
