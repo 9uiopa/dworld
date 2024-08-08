@@ -39,6 +39,7 @@ out/
 ### private ###
 .env
 /mysqldb/mysql.sock
+application-dev.yml
 
 ### volume###
 elasticsearchdb/

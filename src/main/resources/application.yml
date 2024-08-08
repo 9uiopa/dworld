@@ -1,4 +1,20 @@
 spring:
+  profiles:
+    active: dev  # 'dev' 프로파일 활성화
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}" # {baseUrl} : 앱에서 사용하는 기본 주소 (http://localhost:8080 등)
+            authorization-grant-type: authorization_code
+            client-name: kakao # {registrationId}
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id           # 사용자 식별자 속성
   jpa:
     show-sql: true # 쿼리 확인
     defer-datasource-initialization: true #  데이터베이스 초기화 스크립트가 JPA 엔티티 설정이 완료된 후에 실행되도록
@@ -11,7 +27,7 @@ spring:
 
   datasource:
     url: jdbc:mysql://db:3306/${MYSQL_DATABASE} # 'db'는 컨테이너 이름. 로컬 db를 쓸 때는 localhost
-    username: ${MYSQL_USER} # docker-compose에 정의된 docker 환경변수
+    username: ${MYSQL_USER} # docker-compose에 정의된 docker 환경변수 참조. .env 참조 아님!
     password: ${MYSQL_PASSWORD}
 
   elasticsearch:

@@ -15,6 +15,6 @@ public class ArticleViewResponse {
         this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.author = article.getUser().getUsername();
+        this.author = article.getUser().getEmail();
     }
 }

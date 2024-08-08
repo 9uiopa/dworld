@@ -36,11 +36,11 @@ public class AddArticleRequest {
                 .build();
     }
 
-    public ArticleIndex toDocument(String username){
+    public ArticleIndex toDocument(String email){
         return ArticleIndex.builder()
                 .title(title)
                 .content(content)
-                .username(username)
+                .email(email)
                 .boardTypeId(boardTypeId)
                 .build();
     }

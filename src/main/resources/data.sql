@@ -5,4 +5,4 @@ INSERT IGNORE INTO board_type (name) VALUES ('자유');
 INSERT IGNORE INTO board_type (name) VALUES ('유머');
 
 -- User
-INSERT IGNORE INTO user (username,password) VALUES ('오유리','1234');
+INSERT IGNORE INTO user (email,password) VALUES ('오유리','1234');

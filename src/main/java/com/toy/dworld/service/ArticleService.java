@@ -38,8 +38,8 @@ public class ArticleService {
     private final UserRepository userRepository;
     private final BoardTypeRepository boardTypeRepository;
 
-    public Article save(AddArticleRequest request, String username) throws IOException {
-        User user = userRepository.findByUsername(username)
+    public Article save(AddArticleRequest request, String email) throws IOException {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         BoardType boardType = boardTypeRepository.findById(request.getBoardTypeId())
                 .orElseThrow(() -> new RuntimeException("Board type not found"));
@@ -48,7 +48,7 @@ public class ArticleService {
         //elasticsearch index: document 저장
         elasticsearchClient.index(i -> i
                 .index("article")
-                .document(request.toDocument(username))
+                .document(request.toDocument(email))
                 .id(newArticle.getId().toString())
                 .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
         // jpa 레코드 삽입
