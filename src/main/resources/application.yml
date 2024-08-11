@@ -45,5 +45,7 @@ logging:
         security: DEBUG
         data:
           elasticsearch: DEBUG
+
       elasticsearch:
         client: DEBUG
+    root: DEBUG

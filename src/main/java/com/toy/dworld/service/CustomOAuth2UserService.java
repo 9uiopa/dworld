@@ -25,10 +25,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 카카오에서 제공한 사용자 정보
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        log.debug("attributes :" + attributes.toString());
 
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        log.debug("kakao_account :" + kakaoAccount.toString());
         String email = null;
 
         if (kakaoAccount != null) {
