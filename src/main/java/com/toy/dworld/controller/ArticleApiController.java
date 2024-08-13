@@ -9,6 +9,8 @@ import com.toy.dworld.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,8 +25,9 @@ public class ArticleApiController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request) throws IOException {
-        Article newArticle = articleService.save(request, "오유리");
+    public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request,
+    @AuthenticationPrincipal OAuth2User oauth2User) throws IOException {
+        Article newArticle = articleService.save(request, oauth2User.getAttribute("email"));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newArticle);
     }

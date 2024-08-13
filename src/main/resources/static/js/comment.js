@@ -61,7 +61,7 @@ childCommentsButtons.forEach(button => {
             const input = document.createElement('input');
             input.type = 'hidden';
             input.classList.add('comment-form-author');
-            input.value = '오유리';
+            input.value = commentArea.getElementById('main-comment-form').value;
 
             const textarea = document.createElement('textarea');
             textarea.classList.add('form-control','comment-textarea');

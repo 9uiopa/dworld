@@ -37,8 +37,8 @@ public class CommentService {
 //    }
     }
     public Comment addComment(long articleId, AddCommentRequest request) {
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("article not found"));
-        User user = userRepository.findByEmail(request.getAuthor()).orElseThrow(() -> new RuntimeException("user not found"));
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("article not found while adding comments"));
+        User user = userRepository.findByEmail(request.getAuthor()).orElseThrow(() -> new RuntimeException("user not found while adding comments"));
         Long ParentCommentId = request.getParentCommentId();
         Comment comment;
         if(ParentCommentId==null){

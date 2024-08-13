@@ -10,7 +10,7 @@
 <body>
     <div th:fragment="comment(comment)">
         <div class="comment" th:attr="data-comment-id=${comment.id}">
-            <p><strong th:text="${comment.user.username}"></strong>
+            <p><strong th:text="${comment.user.email}"></strong>
                 <span th:text="${comment.createdAt}"></span>
                 <span style="cursor: pointer;" class="badge rounded-pill text-bg-secondary comment-form-btn">대댓글</span>
             </p>

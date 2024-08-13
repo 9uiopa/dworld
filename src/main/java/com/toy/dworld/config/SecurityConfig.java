@@ -21,10 +21,11 @@ public class SecurityConfig {
                 http
                         .csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
                         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                            .anyRequest().permitAll()
-                )
+                                .requestMatchers("/new-article").authenticated()
+                                .anyRequest().permitAll()
+                        )
                         .oauth2Login(oauth2Login -> oauth2Login
-                                .loginPage("/login")
+                                .loginPage("/login") // 로그인하지 않았을 때 리디렉션될 페이지
                                 .defaultSuccessUrl("/articles", true)
                                 .failureUrl("/login?error=true")
                                 .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))

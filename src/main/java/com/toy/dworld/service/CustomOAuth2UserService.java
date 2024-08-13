@@ -53,6 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 attributes,
                 userNameAttributeName // 사용자 ID 필드의 이름(id, sub 등)
         );
+
     }
 
 }

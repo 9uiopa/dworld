@@ -28,13 +28,16 @@
                     <button type="button" class="btn btn-success" id="upvote-btn">추천</button>
                     <button type="button" class="btn btn-danger" id="downvote-btn">비추천</button>
                 </div>
-                <!--                <button type="button" id="modify-btn"-->
-                <!--                        th:if="${article.author} == ${#authentication.principal.username}"-->
-                <!--                        th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"-->
-                <!--                        class="btn btn-primary btn-sm">수정</button>-->
-                <!--                <button type="button" id="delete-btn"-->
-                <!--                        th:if="${article.author} == ${#authentication.principal.username}"-->
-                <!--                        class="btn btn-secondary btn-sm">삭제</button>-->
+                <!-- 수정 버튼 -->
+                <button type="button" id="modify-btn"
+                        th:if="${#authentication.principal != 'anonymousUser' and article.author == #authentication.principal.attributes['email']}"
+                        th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"
+                        class="btn btn-primary btn-sm">수정</button>
+
+                <!-- 삭제 버튼 -->
+                <button type="button" id="delete-btn"
+                        th:if="${#authentication.principal != 'anonymousUser' and article.author == #authentication.principal.attributes['email']}"
+                        class="btn btn-secondary btn-sm">삭제</button>
 
             </article>
             <div class="mt-5" id="comment-area">
@@ -44,38 +47,24 @@
                         <div th:replace="~{fragments/comments :: comment (comment=${comment})}"></div>
                     </div>
                 </div>
-                <div class="mt-4 comment-form">
+                <!-- 로그인 상태 확인 후 댓글 폼 표시 -->
+                <div th:if="${#authentication.principal != 'anonymousUser'}" class="mt-4 comment-form">
                     <label for="comment-content"></label>
-<!--                <input type="hidden" class="comment-form-author" value="${#authentication.name}">security 도입시-->
-                    <input type="hidden" class="comment-form-author" value="오유리">
+                    <input type="hidden" id="main-comment-form" class="comment-form-author"
+                           th:value="${#authentication.principal.attributes['email']}">
                     <textarea class="form-control comment-textarea" id="comment-content" rows="3" placeholder="댓글을 입력하세요"></textarea>
                     <button type="button" class="btn btn-primary mt-2 submit-comment-btn" id="submit-comment-btn">댓글 달기</button>
+                </div>
+
+                <!-- 로그인하지 않은 상태에서 댓글 폼을 숨김 -->
+                <div th:if="${#authentication.principal == 'anonymousUser'}" class="mt-4 comment-form">
+                    <p>로그인 후 댓글을 달 수 있습니다. <a href="/login">로그인 하러 가기</a></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!--<div id="disqus_thread"></div>-->
-<!--<script>-->
-<!--    /**-->
-<!--     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.-->
-<!--     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */-->
-<!--    /*-->
-<!--    var disqus_config = function () {-->
-<!--    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable-->
-<!--    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable-->
-<!--    };-->
-<!--    */-->
-<!--    (function () { // DON'T EDIT BELOW THIS LINE-->
-<!--        var d = document, s = d.createElement('script');-->
-<!--        s.src = 'https://d-world.disqus.com/embed.js';-->
-<!--        s.setAttribute('data-timestamp', +new Date());-->
-<!--        (d.head || d.body).appendChild(s);-->
-<!--    })();-->
-<!--</script>-->
-<!--<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by-->
-<!--    Disqus.</a></noscript>-->
 <script src="/js/article.js"></script>
 <script src="/js/comment.js"></script>
 

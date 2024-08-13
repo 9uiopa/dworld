@@ -9,7 +9,12 @@ import com.toy.dworld.service.ArticleService;
 import com.toy.dworld.service.BoardTypeService;
 import com.toy.dworld.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +27,14 @@ import java.util.Optional;
 
 import static com.toy.dworld.Constants.PAGE_SIZE;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ArticleViewController {
     private final ArticleService articleService;
     private final BoardTypeService boardTypeService;
     private final CommentService commentService;
+
     @GetMapping(value = "/articles")
     public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardType,
                                         @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException{

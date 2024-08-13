@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>D-world 웹 커뮤니티</title>
@@ -8,8 +10,18 @@
 </head>
 <body>
 <div th:fragment="header">
+
     <div class="d-flex justify-content-end p-2">
-        <a href="/login" class="btn btn-secondary">로그인</a>
+        <div sec:authorize="!isAuthenticated()">
+            <a href="/login" class="btn btn-primary">로그인</a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <a href="/logout" class="btn btn-primary">로그아웃</a>
+        </div>
+        <!-- ROLE_USER 역할을 가진 사용자에게만 보이는 버튼 -->
+<!--        <div sec:authorize="hasAuthority('ROLE_USER')">-->
+<!--            <button class="btn btn-success">ROLE_USER</button>-->
+<!--        </div>-->
     </div>
     <div class="p-4 mb-5 text-center</> bg-light">
         <h1 class="mb-3">D-world</h1>
