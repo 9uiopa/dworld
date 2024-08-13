@@ -1,5 +1,6 @@
 //댓글 추가
 const commentArea = document.getElementById('comment-area');
+const commentsSection = document.getElementById('comments-section');
 commentArea.addEventListener('click',ev => {
     if (ev.target && ev.target.classList.contains('submit-comment-btn')) {// 댓글 달기 버튼 눌렀을 때
         let articleId = document.getElementById('article-id').value;
@@ -43,6 +44,7 @@ commentArea.addEventListener('click',ev => {
 
 //대댓글 폼 추가
 const childCommentsButtons = document.querySelectorAll('.comment-form-btn');
+
 childCommentsButtons.forEach(button => {
     button.addEventListener('click', function() {
         const commentDiv = button.closest('.comment'); // 부모 요소 (댓글 컨테이너)를 찾음
@@ -50,7 +52,7 @@ childCommentsButtons.forEach(button => {
         const existingReplyForm = commentDiv.querySelector('.comment-form');
         if (!existingReplyForm) { // 기존의 답글 폼이 없으면 새로 추가
             //다른 답글 폼 제거 (답글 폼은 1개만 표시된다)
-            commentArea.querySelectorAll('.comment-form').forEach(element => element.remove());
+            commentsSection.querySelectorAll('.comment-form').forEach(element => element.remove());
             // 답글 폼 생성
             const commentForm = document.createElement('div');
             commentForm.classList.add('comment-form', 'mt-2');
@@ -61,7 +63,7 @@ childCommentsButtons.forEach(button => {
             const input = document.createElement('input');
             input.type = 'hidden';
             input.classList.add('comment-form-author');
-            input.value = commentArea.getElementById('main-comment-form').value;
+            input.value = document.getElementById('main-comment-form').value;
 
             const textarea = document.createElement('textarea');
             textarea.classList.add('form-control','comment-textarea');

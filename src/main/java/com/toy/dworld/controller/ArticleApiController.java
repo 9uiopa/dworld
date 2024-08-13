@@ -7,6 +7,7 @@ import com.toy.dworld.dto.ArticleResponse;
 import com.toy.dworld.dto.UpdateArticleRequest;
 import com.toy.dworld.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
-
+@Slf4j
 @RequestMapping("/api/articles")
 @RequiredArgsConstructor
 @RestController
@@ -27,7 +29,8 @@ public class ArticleApiController {
     @PostMapping
     public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request,
     @AuthenticationPrincipal OAuth2User oauth2User) throws IOException {
-        Article newArticle = articleService.save(request, oauth2User.getAttribute("email"));
+        Map<String, Object> kakaoAccount = oauth2User.getAttribute("kakao_account");
+        Article newArticle = articleService.save(request, (String) kakaoAccount.get("email"));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newArticle);
     }
