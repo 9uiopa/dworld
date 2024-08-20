@@ -20,21 +20,6 @@ public class CommentService {
     private final UserRepository userRepository;
     public List<Comment> getCommentsByArticleId(Long articleId){
         return commentRepository.findByArticleIdAndParentCommentIsNull(articleId);
-//        List<Comment> rootComments = commentRepository.findByArticleIdAndParentCommentIsNull(articleId);
-//        for (Comment rootComment : rootComments) {
-//            buildCommentTree(rootComment);
-//        }
-//        return rootComments;
-
-
-//    private void buildCommentTree(Comment parentComment) {
-//        List<Comment> childComments = parentComment.getChildComments();
-//        if (childComments != null && !childComments.isEmpty()) {
-//            for (Comment childComment : childComments) {
-//                buildCommentTree(childComment);
-//            }
-//        }
-//    }
     }
     public Comment addComment(long articleId, AddCommentRequest request) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("article not found while adding comments"));

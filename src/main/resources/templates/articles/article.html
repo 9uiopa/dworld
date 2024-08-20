@@ -24,10 +24,14 @@
                 <section class="mb-5">
                     <p class="fs-5 mb-4" th:text="${article.content}"></p>
                 </section>
-                <div class="d-flex justify-content-center mb-4">
-                    <button type="button" class="btn btn-success" id="upvote-btn">추천</button>
-                    <button type="button" class="btn btn-danger" id="downvote-btn">비추천</button>
+                <div id = "vote-section" class="d-flex flex-column justify-content-center align-items-center">
+                    <p id="vote-total">추천 총합</p>
+                    <div id="vote-btn-section" class="d-flex justify-content-center mb-4">
+                        <button type="button" class="btn btn-success" id="upvote-btn">추천</button>
+                        <button type="button" class="btn btn-danger" id="downvote-btn">비추천</button>
+                    </div>
                 </div>
+
                 <!-- 수정 버튼 -->
                 <button type="button" id="modify-btn"
                         th:if="${#authentication.principal != 'anonymousUser' and article.author == #authentication.principal.attributes['email']}"
@@ -67,5 +71,6 @@
 
 <script src="/js/article.js"></script>
 <script src="/js/comment.js"></script>
+<script src="/js/vote.js"></script>
 
 </body>

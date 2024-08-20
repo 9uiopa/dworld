@@ -35,6 +35,7 @@ public class ArticleViewController {
     private final BoardTypeService boardTypeService;
     private final CommentService commentService;
 
+
     @GetMapping(value = "/articles")
     public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardType,
                                         @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException{

@@ -1,14 +1,24 @@
 package com.toy.dworld.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"article_id", "user_id"})
+        }
+)
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +36,13 @@ public class Vote {
     @Column(nullable = false)
     private VoteType voteType;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at",nullable = false, updatable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public enum VoteType {
         UPVOTE,
         DOWNVOTE
     }
+
 }

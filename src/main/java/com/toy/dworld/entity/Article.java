@@ -26,9 +26,8 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "board_type_id", nullable = false)
     private BoardType boardType;
-    @CreatedDate
     @Column(name = "created")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt=LocalDateTime.now();
     @LastModifiedDate
     @Column(name = "updated")
     private LocalDateTime updatedAt;

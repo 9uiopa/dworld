@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-@NoArgsConstructor //  hibernate가 객체 생성해야하기 때문에 필요
 @AllArgsConstructor
 @Getter
 public class AddArticleRequest {
@@ -22,8 +21,6 @@ public class AddArticleRequest {
     private String title;
     @NotNull
     private String content;
-    @NotBlank
-    private String author;
     @NotNull
     private Long boardTypeId;
 
