@@ -8,6 +8,7 @@ import com.toy.dworld.entity.Comment;
 import com.toy.dworld.service.ArticleService;
 import com.toy.dworld.service.BoardTypeService;
 import com.toy.dworld.service.CommentService;
+import com.toy.dworld.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,19 +36,24 @@ public class ArticleViewController {
     private final BoardTypeService boardTypeService;
     private final CommentService commentService;
 
-
     @GetMapping(value = "/articles")
     public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardType,
                                         @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException{
-        Page<Article> articlePage = articleService.getArticlesByBoardType(boardType,page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
-        model.addAttribute("articlePage", articlePage);
+
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", PAGE_SIZE);
         model.addAttribute("boardType",boardType);
 
         if (boardType == 1){
+            Page<Article> hotArticles = articleService.getHotArticles(page - 1, PAGE_SIZE);
+            log.debug("##### hotarticles controller:" +hotArticles.toString());
+            log.debug("##### controller - content :" + hotArticles.getContent());
+            model.addAttribute("articlePage",hotArticles);
             return "articles/hotArticleList";
         }else{
+            Page<Article> articlePage = articleService.getArticlesByBoardType(boardType,page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
+            model.addAttribute("articlePage", articlePage);
+
             return "articles/articleList";
         }
     }
@@ -61,6 +67,10 @@ public class ArticleViewController {
 
         List<Comment> comments = commentService.getCommentsByArticleId(id);
         model.addAttribute("comments", comments);
+        int upVotes = 0;
+        int downVotes = 0;
+        model.addAttribute("upVotes", upVotes);
+        model.addAttribute("downVotes", downVotes);
 
         return "articles/article";
     }

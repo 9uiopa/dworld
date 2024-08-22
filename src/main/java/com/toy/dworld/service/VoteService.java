@@ -26,22 +26,58 @@ public class VoteService {
     private final ArticleRepository articleRepository;
 
     @Transactional
-    public Vote addVote(AddVoteRequest request, Long articleId, String voterEmail){
-        User user = userRepository.findByEmail(voterEmail).orElseThrow(()->
-                        new IllegalArgumentException("User not found with email: " + voterEmail));
-        Article article = articleRepository.findById(articleId).orElseThrow();
-        Vote vote = request.toEntity(user, article, request.getVoteType());
+    public Vote addVote(AddVoteRequest request, Long articleId, String voterEmail) {
+        User user = findUserByEmail(voterEmail);
+        Article article = findArticleById(articleId);
+        Vote vote = createVote(request, user, article);
+
+        Vote newVote = saveVote(vote);
+        updateArticleVoteCount(articleId, newVote);
+
+        return newVote;
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+    }
+
+    private Article findArticleById(Long articleId) {
+        return articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("Article not found with id: " + articleId));
+    }
+
+    private Vote createVote(AddVoteRequest request, User user, Article article) {
+        return request.toEntity(user, article, request.getVoteType());
+    }
+
+    private Vote saveVote(Vote vote) {
         try {
             return voteRepository.save(vote);
-        } catch (DataIntegrityViolationException ex) { // SQLIntegrityConstraintViolationException에 대한 Spring Exception
-            // 데이터 무결성 위반 예외 처리 : 중복 추천 방지(유니크 키)
+        } catch (DataIntegrityViolationException ex) {
             throw new DataIntegrityViolationException("중복 추천은 불가능", ex);
         }
-
     }
 
-    public Optional<Vote> findByArticleIdAndUserEmail(Long articleId, String email){
+    private void updateArticleVoteCount(Long articleId, Vote vote) {
+        if (vote.getVoteType() == Vote.VoteType.UPVOTE) {
+            articleRepository.incrementUpvotes(articleId);
+        } else if (vote.getVoteType() == Vote.VoteType.DOWNVOTE) {
+            articleRepository.incrementDownvotes(articleId);
+        }
+    }
+
+    public Optional<Vote> findByArticleIdAndUserEmail(Long articleId, String email) {
         return voteRepository.findByArticleIdAndUserEmail(articleId, email);
     }
+
+    public Long countUpvotesForArticle(Long articleId) {
+        return voteRepository.countUpvotesForArticle(articleId);
+    }
+
+    public Long countDownvotesForArticle(Long articleId) {
+        return voteRepository.countDownvotesForArticle(articleId);
+    }
+
 
 }

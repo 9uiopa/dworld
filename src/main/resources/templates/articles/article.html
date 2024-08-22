@@ -25,10 +25,9 @@
                     <p class="fs-5 mb-4" th:text="${article.content}"></p>
                 </section>
                 <div id = "vote-section" class="d-flex flex-column justify-content-center align-items-center">
-                    <p id="vote-total">추천 총합</p>
                     <div id="vote-btn-section" class="d-flex justify-content-center mb-4">
-                        <button type="button" class="btn btn-success" id="upvote-btn">추천</button>
-                        <button type="button" class="btn btn-danger" id="downvote-btn">비추천</button>
+                        <button type="button" class="btn btn-success" id="upvote-btn">추천<span id="upvote-count" class="badge badge-success ml-2">0</span></button>
+                        <button type="button" class="btn btn-danger" id="downvote-btn">비추천<span id="downvote-count" class="badge badge-danger ml-2">0</span></button>
                     </div>
                 </div>
 

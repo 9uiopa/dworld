@@ -18,7 +18,7 @@ public class Article {
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "content" , nullable = true)
+    @Column(name = "content")
     private String content;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -33,6 +33,11 @@ public class Article {
     private LocalDateTime updatedAt;
     @Column(nullable = false)
     private boolean enabled = true;
+    @Column(name = "upvotes")
+    private int upvotes = 0;
+    @Column(name = "downvotes")
+    private int downvotes = 0;
+
 
     @Builder
     public Article(String title, String content, User user, BoardType boardType){

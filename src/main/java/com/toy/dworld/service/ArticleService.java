@@ -16,6 +16,7 @@ import com.toy.dworld.repo.ArticleRepository;
 import com.toy.dworld.repo.BoardTypeRepository;
 import com.toy.dworld.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.toy.dworld.Constants.HOT_ARTICLE_THRESHOLD;
+
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ArticleService {
@@ -56,10 +60,14 @@ public class ArticleService {
     }
 
     public Page<Article> getArticlesByBoardType(long boardTypeId,int page, int size) {
-
+        log.debug("##### getArticlesByBoardType:" +articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size)).getContent());
         return articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size));
-
     }
+
+    public Page<Article> getHotArticles(int page, int size){
+        return articleRepository.findByUpvotesGreaterThanEqual(HOT_ARTICLE_THRESHOLD, PageRequest.of(page,size));
+    }
+
 
     public Optional<Article> findById(long id) {
         return articleRepository.findById(id);

@@ -3,6 +3,7 @@ package com.toy.dworld.controller;
 
 import com.toy.dworld.dto.AddVoteRequest;
 import com.toy.dworld.entity.Vote;
+import com.toy.dworld.service.ArticleService;
 import com.toy.dworld.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RestController
 public class VoteApiController {
     private final VoteService voteService;
+    private final ArticleService articleService;
 
     @PostMapping("/api/articles/{id}/vote")
     public ResponseEntity<String> addVote(@RequestBody @Validated AddVoteRequest request,
@@ -39,7 +41,17 @@ public class VoteApiController {
 
         // 새로운 추천
         Vote newVote = voteService.addVote(request, id, voterEmail);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Vote recorded.");
+        return ResponseEntity.status(HttpStatus.CREATED).body(newVote.toString());
+    }
+
+    @GetMapping("/api/articles/{id}/upvotes")
+    public Long countUpvotesForArticle(@PathVariable Long id){
+        return voteService.countUpvotesForArticle(id);
+    }
+
+    @GetMapping("/api/articles/{id}/downvotes")
+    public Long countDownvotesForArticle(@PathVariable Long id){
+        return voteService.countDownvotesForArticle(id);
     }
 
     // 사용자 이메일 추출
