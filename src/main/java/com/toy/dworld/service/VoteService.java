@@ -1,5 +1,6 @@
 package com.toy.dworld.service;
 
+import com.toy.dworld.Constants;
 import com.toy.dworld.dto.AddVoteRequest;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.User;
@@ -10,6 +11,7 @@ import com.toy.dworld.repo.VoteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +34,8 @@ public class VoteService {
         Vote vote = createVote(request, user, article);
 
         Vote newVote = saveVote(vote);
-        updateArticleVoteCount(articleId, newVote);
+        updateArticleVoteCount(article,vote);
+
 
         return newVote;
     }
@@ -59,12 +62,21 @@ public class VoteService {
         }
     }
 
-    private void updateArticleVoteCount(Long articleId, Vote vote) {
+    private void updateArticleVoteCount(Article article, Vote vote) {
         if (vote.getVoteType() == Vote.VoteType.UPVOTE) {
-            articleRepository.incrementUpvotes(articleId);
+            articleRepository.incrementUpvotes(article.getId());
+            // 인기글 커트라인 넘었을 때
+            if(article.getUpvotes() >= Constants.HOT_ARTICLE_THRESHOLD){
+                evictHotArticleCache();
+            }
         } else if (vote.getVoteType() == Vote.VoteType.DOWNVOTE) {
-            articleRepository.incrementDownvotes(articleId);
+            articleRepository.incrementDownvotes(article.getId());
+
         }
+    }
+    @CacheEvict(value = "hotArticles", key = "'hot'")
+    public void evictHotArticleCache(){
+        //인기글 캐시 무효화
     }
 
     public Optional<Vote> findByArticleIdAndUserEmail(Long articleId, String email) {

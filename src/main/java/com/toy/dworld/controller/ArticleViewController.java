@@ -45,9 +45,8 @@ public class ArticleViewController {
         model.addAttribute("boardType",boardType);
 
         if (boardType == 1){
+            // 인기 게시글
             Page<Article> hotArticles = articleService.getHotArticles(page - 1, PAGE_SIZE);
-            log.debug("##### hotarticles controller:" +hotArticles.toString());
-            log.debug("##### controller - content :" + hotArticles.getContent());
             model.addAttribute("articlePage",hotArticles);
             return "articles/hotArticleList";
         }else{

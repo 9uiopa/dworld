@@ -10,7 +10,6 @@ if (deleteButton) {
         })
             .then(response => {
                 if (response.ok){
-                    console.log("deleted completely")
                     alert('삭제가 완료되었습니다.');
                 }
 

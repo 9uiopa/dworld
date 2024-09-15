@@ -25,6 +25,11 @@ spring:
     hibernate:
       ddl-auto: update # 로컬 db 스키마를 JPA 엔티티와 일치하도록 생성하거나 수정해준다.
 
+  datasource:
+    url: jdbc:mysql://db:3306/${MYSQL_DATABASE} # 'db'는 컨테이너 이름. 로컬 db를 쓸 때는 localhost
+    username: ${MYSQL_USER} # docker-compose에 정의된 docker 환경변수 참조 .env 참조 아님!
+    password: ${MYSQL_PASSWORD}
+
   elasticsearch:
     uris: http://elasticsearch:9200
 
@@ -32,10 +37,12 @@ spring:
   sql:
     init:
       mode: always
+  cache:
+    type: redis
   data:
     redis:
-      host: redis
-      port: 6379
+      host: ${SPRING_REDIS_HOST}  # docker 환경 변수로 Redis 호스트 지정
+      port: ${SPRING_REDIS_PORT}  # docker 환경 변수로 Redis 포트 지정
 
 logging:
   level:

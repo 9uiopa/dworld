@@ -11,12 +11,12 @@ import com.toy.dworld.dto.UpdateArticleRequest;
 import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.entity.BoardType;
 import com.toy.dworld.entity.User;
-import com.toy.dworld.repo.ArticleIndexRepository;
 import com.toy.dworld.repo.ArticleRepository;
 import com.toy.dworld.repo.BoardTypeRepository;
 import com.toy.dworld.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +37,6 @@ import static com.toy.dworld.Constants.HOT_ARTICLE_THRESHOLD;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final ArticleIndexRepository articleIndexRepository;
     private final ElasticsearchClient elasticsearchClient;
     private final UserRepository userRepository;
     private final BoardTypeRepository boardTypeRepository;
@@ -60,14 +59,14 @@ public class ArticleService {
     }
 
     public Page<Article> getArticlesByBoardType(long boardTypeId,int page, int size) {
-        log.debug("##### getArticlesByBoardType:" +articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size)).getContent());
         return articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size));
     }
 
+    @Cacheable(value = "hotArticles", key = "'hot'") //value : 캐시이름 key : 키 , key의 value : 메소드 반환값
     public Page<Article> getHotArticles(int page, int size){
+        log.debug("################ getHotArticles");
         return articleRepository.findByUpvotesGreaterThanEqual(HOT_ARTICLE_THRESHOLD, PageRequest.of(page,size));
     }
-
 
     public Optional<Article> findById(long id) {
         return articleRepository.findById(id);
@@ -106,8 +105,6 @@ public class ArticleService {
                         .fuzziness("AUTO")  // 자동으로 fuzziness 레벨 설정
                 )
         );
-        // 로그 출력
-        System.out.println("Elasticsearch Query: " + query.toString());
 
         // 요청 생성
         SearchRequest request = SearchRequest.of(sr -> sr.index("article")
@@ -115,9 +112,8 @@ public class ArticleService {
                 .from(page)  // 시작점 설정
                 .size(size)  // 페이지 크기 설정
         );
-        // 로그 출력
-        System.out.println("SearchRequest: " + request.toString());
 
+        log.debug("SearchRequest: " + request.toString());
 
         //elastic search - 쿼리 수행
         SearchResponse<ArticleIndex> searchResponse = elasticsearchClient.search(request, ArticleIndex.class);
@@ -132,10 +128,6 @@ public class ArticleService {
                 .collect(Collectors.toList());
 
         long totalHits = searchResponse.hits().total().value();
-
-        // 로그 출력
-        System.out.println("Total Hits: " + totalHits);
-        System.out.println("Articles: " + articles);
 
         return new PageImpl<>(articles, pageable, totalHits);
     }

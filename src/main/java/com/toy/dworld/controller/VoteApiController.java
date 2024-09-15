@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class VoteApiController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User has already voted.");
         }
 
-        // 새로운 추천
+        // 새로운 추천 저장
         Vote newVote = voteService.addVote(request, id, voterEmail);
         return ResponseEntity.status(HttpStatus.CREATED).body(newVote.toString());
     }
