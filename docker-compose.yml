@@ -2,11 +2,6 @@ version: '3.8'
 services:
   db: # 서비스 이름 : db
     image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # 필수 , 루트 암호 설정
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306" # 로컬 3306 접근시 컨테이너 3306 port로 이동
     volumes: # 도커 볼륨
@@ -21,10 +16,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DATABASE_URL=jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false # useSSL=false: mysql 8.0이상 플러그인 보안 문제 해결용
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_REDIS_HOST=redis # Redis 호스트 이름
       - SPRING_REDIS_PORT=6379 # Redis 포트 번호
     depends_on:
