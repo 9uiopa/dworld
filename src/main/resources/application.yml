@@ -32,6 +32,8 @@ spring:
   sql:
     init:
       mode: always
+  cache:
+    type: redis
   data:
     redis:
       host: redis
