@@ -31,9 +31,8 @@ public class VoteApiController {
         if (oauth2User == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated.");
         }
-
         String voterEmail = getUserEmail(oauth2User);
-
+        // 이미 추천 여부 확인
         if (hasUserAlreadyVoted(id, voterEmail)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User has already voted.");
         }

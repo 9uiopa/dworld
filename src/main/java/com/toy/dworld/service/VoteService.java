@@ -11,6 +11,7 @@ import com.toy.dworld.repo.VoteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.core.ApplicationContext;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class VoteService {
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
+    private final org.springframework.context.ApplicationContext applicationContext;
 
     @Transactional
     public Vote addVote(AddVoteRequest request, Long articleId, String voterEmail) {
@@ -35,7 +38,6 @@ public class VoteService {
 
         Vote newVote = saveVote(vote);
         updateArticleVoteCount(article,vote);
-
 
         return newVote;
     }
@@ -64,19 +66,19 @@ public class VoteService {
 
     private void updateArticleVoteCount(Article article, Vote vote) {
         if (vote.getVoteType() == Vote.VoteType.UPVOTE) {
-            articleRepository.incrementUpvotes(article.getId());
+            article.setUpvotes(article.getUpvotes()+1);
+            articleRepository.save(article);
             // 인기글 커트라인 넘었을 때
-            if(article.getUpvotes() >= Constants.HOT_ARTICLE_THRESHOLD){
-                evictHotArticleCache();
+            if(article.getUpvotes()+1 >= Constants.HOT_ARTICLE_THRESHOLD){
+                log.debug("surpass THRESHOLD");
+                // 객체 본인이 아닌 프록시를 참조하게 하여 메서드 내부호출문제 해결
+                ArticleService proxy = applicationContext.getBean(ArticleService.class);
+                proxy.evictHotArticleCache();
             }
         } else if (vote.getVoteType() == Vote.VoteType.DOWNVOTE) {
-            articleRepository.incrementDownvotes(article.getId());
-
+            article.setDownvotes(article.getDownvotes()+1);
+            articleRepository.save(article);
         }
-    }
-    @CacheEvict(value = "hotArticles", key = "'hot'")
-    public void evictHotArticleCache(){
-        //인기글 캐시 무효화
     }
 
     public Optional<Vote> findByArticleIdAndUserEmail(Long articleId, String email) {

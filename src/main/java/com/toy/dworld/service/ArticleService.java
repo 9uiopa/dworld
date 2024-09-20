@@ -16,6 +16,7 @@ import com.toy.dworld.repo.BoardTypeRepository;
 import com.toy.dworld.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -67,6 +68,13 @@ public class ArticleService {
         log.debug("################ getHotArticles");
         return articleRepository.findByUpvotesGreaterThanEqual(HOT_ARTICLE_THRESHOLD, PageRequest.of(page,size));
     }
+
+    @CacheEvict(value = "hotArticles", key = "'hot'")
+    public void evictHotArticleCache(){
+        log.debug("cacheEvicted : hot");
+        //인기글 캐시 무효화
+    }
+
 
     public Optional<Article> findById(long id) {
         return articleRepository.findById(id);
