@@ -47,6 +47,6 @@ CREATE TABLE vote
     vote_type  ENUM('upvote', 'downvote') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY unique_vote (user_id, article_id),
-    FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (article_id) REFERENCES article (id)
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
+    FOREIGN KEY (article_id) REFERENCES article (id) ON DELETE CASCADE
 );

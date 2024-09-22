@@ -18,10 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +29,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.toy.dworld.Constants.HOT_ARTICLE_THRESHOLD;
+import static org.springframework.data.domain.Sort.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -60,21 +59,13 @@ public class ArticleService {
     }
 
     public Page<Article> getArticlesByBoardType(long boardTypeId,int page, int size) {
-        return articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size));
+        return articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size, by(DESC,"createdAt")));
     }
 
-    @Cacheable(value = "hotArticles", key = "'hot'") //value : 캐시이름 key : 키 , key의 value : 메소드 반환값
+    @Cacheable(value = "hotArticles", key = "'hot_' + #page + '_' + #size") //value : 캐시이름 key : 키 , key의 value : 메소드 반환값
     public Page<Article> getHotArticles(int page, int size){
-        log.debug("################ getHotArticles");
-        return articleRepository.findByUpvotesGreaterThanEqual(HOT_ARTICLE_THRESHOLD, PageRequest.of(page,size));
+        return articleRepository.findByUpvotesGreaterThanEqual(HOT_ARTICLE_THRESHOLD, PageRequest.of(page,size,by(DESC,"createdAt")));
     }
-
-    @CacheEvict(value = "hotArticles", key = "'hot'")
-    public void evictHotArticleCache(){
-        log.debug("cacheEvicted : hot");
-        //인기글 캐시 무효화
-    }
-
 
     public Optional<Article> findById(long id) {
         return articleRepository.findById(id);
@@ -105,7 +96,7 @@ public class ArticleService {
     }
 
     public Page<ArticleIndex> searchArticles(String keyword, int page, int size) throws IOException {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size,by(DESC,"createdAt"));
         // 쿼리 생성
         Query query = Query.of(q -> q.multiMatch(mmq -> mmq
                         .fields(Arrays.asList("title", "content"))
