@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
@@ -22,5 +24,6 @@ public class ArticleIndex {
     private String content;
     private String email;
     private Long boardTypeId;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }

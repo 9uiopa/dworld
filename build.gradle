@@ -29,8 +29,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    // redis - client는 lettuce 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.session:spring-session-data-redis'
     // Jakarta Bean Validation API
     implementation 'jakarta.validation:jakarta.validation-api:2.0.2'
     // Hibernate Validator - Bean Validation의 구현체

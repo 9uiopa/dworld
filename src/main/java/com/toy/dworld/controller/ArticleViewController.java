@@ -82,7 +82,7 @@ public class ArticleViewController {
         model.addAttribute("articlePage", articlePage);
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", PAGE_SIZE);
-        model.addAttribute("keyword", keyword);  // keyword를 모델에 추가
+        model.addAttribute("keyword", keyword);
         return "articles/searchResult";
     }
 
