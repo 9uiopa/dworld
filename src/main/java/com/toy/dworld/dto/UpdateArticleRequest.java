@@ -12,6 +12,7 @@ public class UpdateArticleRequest {
     private String title;
     private String content;
     private String author;
+
     public ArticleIndex toDocument(){
         return ArticleIndex.builder()
                 .title(title)

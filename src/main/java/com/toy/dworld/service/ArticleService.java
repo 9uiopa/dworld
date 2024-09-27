@@ -5,6 +5,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import com.toy.dworld.dto.ArticleDetailDTO;
+import com.toy.dworld.dto.CommentDTO;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.dto.AddArticleRequest;
 import com.toy.dworld.dto.UpdateArticleRequest;
@@ -14,6 +16,7 @@ import com.toy.dworld.entity.User;
 import com.toy.dworld.repo.ArticleRepository;
 import com.toy.dworld.repo.BoardTypeRepository;
 import com.toy.dworld.repo.UserRepository;
+import com.toy.dworld.utils.CommentConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -40,6 +43,7 @@ public class ArticleService {
     private final ElasticsearchClient elasticsearchClient;
     private final UserRepository userRepository;
     private final BoardTypeRepository boardTypeRepository;
+    private final CommentService commentService;
 
     public Article save(AddArticleRequest request, String email) throws IOException {
         User user = userRepository.findByEmail(email)
@@ -65,6 +69,21 @@ public class ArticleService {
     @Cacheable(value = "hotArticles", key = "'hot_' + #page + '_' + #size") //value : 캐시이름 key : 키 , key의 value : 메소드 반환값
     public Page<Article> getHotArticles(int page, int size){
         return articleRepository.findByUpvotesGreaterThanEqual(HOT_ARTICLE_THRESHOLD, PageRequest.of(page,size,by(DESC,"createdAt")));
+    }
+
+    public ArticleDetailDTO getArticleDetail(long id){
+        Article article = findById(id).orElseThrow(() -> new IllegalArgumentException(id + "라는 id를 가진 게시물이 없습니다."));
+        List<CommentDTO> commentDTOList = commentService.getCommentsByArticleId(id)
+                .stream()
+                .map(CommentConverter::toDTO)
+                .toList();
+        return ArticleDetailDTO.builder()
+                .id(article.getId())
+                .title(article.getTitle())
+                .author(article.getUser().getEmail())
+                .comments(commentDTOList)
+                .boardTypeName(article.getBoardType().getName())
+                .build();
     }
 
     public Optional<Article> findById(long id) {

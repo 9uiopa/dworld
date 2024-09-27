@@ -31,18 +31,15 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "parent_comment_id", nullable = true)
-    @JsonBackReference // 자식 댓글을 직렬화할 때 부모 댓글의 참조를 무시합니다.
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true) // 부모 댓글 사라질 때 자식도 사라짐. 어차피 실제로 삭제 안하면 됨
-    @JsonManagedReference
     private List<Comment> childComments = new ArrayList<>();
 
     private String content;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
 
     @Builder
     public Comment(String content, Article article, User user,Comment parentComment){

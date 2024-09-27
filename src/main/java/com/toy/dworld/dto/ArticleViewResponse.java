@@ -11,6 +11,7 @@ public class ArticleViewResponse {
     private String title;
     private String content;
     private String author;
+
     public ArticleViewResponse(Article article){
         this.id = article.getId();
         this.title = article.getTitle();

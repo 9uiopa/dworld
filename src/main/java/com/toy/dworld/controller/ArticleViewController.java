@@ -1,5 +1,6 @@
 package com.toy.dworld.controller;
 
+import com.toy.dworld.dto.ArticleDetailDTO;
 import com.toy.dworld.dto.ArticleViewResponse;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.ArticleIndex;
@@ -57,22 +58,28 @@ public class ArticleViewController {
         }
     }
 
+//    @GetMapping("/articles/{id}")
+//    public String getArticle(@PathVariable Long id, Model model) {
+//        Article article = articleService.findById(id).orElseThrow();
+//        model.addAttribute("article", new ArticleViewResponse(article));
+//        String boardTypeName = article.getBoardType().getName();
+//        model.addAttribute("boardType",boardTypeName);
+//
+//        List<Comment> comments = commentService.getCommentsByArticleId(id);
+//        model.addAttribute("comments", comments);
+//        int upVotes = 0;
+//        int downVotes = 0;
+//        model.addAttribute("upVotes", upVotes);
+//        model.addAttribute("downVotes", downVotes);
+//
+//        return "articles/article";
+//    }
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
-        Article article = articleService.findById(id).orElseThrow();
-        model.addAttribute("article", new ArticleViewResponse(article));
-        String boardTypeName = article.getBoardType().getName();
-        model.addAttribute("boardType",boardTypeName);
-
-        List<Comment> comments = commentService.getCommentsByArticleId(id);
-        model.addAttribute("comments", comments);
-        int upVotes = 0;
-        int downVotes = 0;
-        model.addAttribute("upVotes", upVotes);
-        model.addAttribute("downVotes", downVotes);
-
+        model.addAttribute("article", articleService.getArticleDetail(id));
         return "articles/article";
     }
+
 
     @GetMapping(value = "/articles", params = "query")
     public String searchArticles(@RequestParam(name = "query") String keyword,

@@ -14,7 +14,7 @@
             <article>
                 <input type="hidden" id="article-id" th:value="${article.id}">
                 <div class="mb-2">
-                    <p><span id="boardType" th:text="${boardType}"></span></p>
+                    <p><span id="boardType" th:text="${article.boardTypeName}"></span></p>
                 </div>
                 <header class="mb-4">
                     <h1 class="fw-bolder mb-1" th:text="${article.title}"></h1>
@@ -24,6 +24,7 @@
                 <section class="mb-5">
                     <p class="fs-5 mb-4" th:text="${article.content}"></p>
                 </section>
+
                 <div id = "vote-section" class="d-flex flex-column justify-content-center align-items-center">
                     <div id="vote-btn-section" class="d-flex justify-content-center mb-4">
                         <button type="button" class="btn btn-success" id="upvote-btn">추천<span id="upvote-count" class="badge badge-success ml-2">0</span></button>
@@ -46,8 +47,8 @@
             <div class="mt-5" id="comment-area">
                 <h2>댓글</h2>
                 <div id="comments-section">
-                    <div th:each="comment : ${comments}">
-                        <div th:replace="~{fragments/comments :: comment (comment=${comment})}"></div>
+                    <div th:each="comment : ${article.comments}">
+                        <div th:replace="~{fragments/comments :: commentFragment(comment=${comment})}"></div>
                     </div>
                 </div>
                 <!-- 로그인 상태 확인 후 댓글 폼 표시 -->

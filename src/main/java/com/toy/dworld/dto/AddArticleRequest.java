@@ -24,8 +24,6 @@ public class AddArticleRequest {
     private String content;
     @NotNull
     private Long boardTypeId;
-    @NotNull
-    private LocalDateTime createdAt;
 
     public Article toEntity(User user, BoardType boardType){ // DTO 이용해서 Entity 반환
         return Article.builder()

@@ -8,9 +8,9 @@
 
 </head>
 <body>
-    <div th:fragment="comment(comment)">
+    <div th:fragment="commentFragment(comment)">
         <div class="comment" th:attr="data-comment-id=${comment.id}">
-            <p><strong th:text="${comment.user.email}"></strong>
+            <p><strong th:text="${comment.author}"></strong>
                 <span th:text="${comment.createdAt}"></span>
                 <span style="cursor: pointer;" class="badge rounded-pill text-bg-secondary comment-form-btn">대댓글</span>
             </p>
@@ -18,7 +18,7 @@
             <div class="childComment">
                 <div th:if="${#lists.size(comment.childComments) > 0}">
                     <div th:each="childComment : ${comment.childComments}">
-                        <div th:replace="~{fragments/comments :: comment (comment=${childComment})}"></div>
+                        <div th:replace="~{fragments/comments :: commentFragment (comment=${childComment})}"></div>
                     </div>
                 </div>
             </div>

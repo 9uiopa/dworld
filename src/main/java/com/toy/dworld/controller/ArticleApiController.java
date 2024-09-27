@@ -1,9 +1,9 @@
 package com.toy.dworld.controller;
 
 
+import com.toy.dworld.dto.ArticleViewResponse;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.dto.AddArticleRequest;
-import com.toy.dworld.dto.ArticleResponse;
 import com.toy.dworld.dto.UpdateArticleRequest;
 import com.toy.dworld.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +36,9 @@ public class ArticleApiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id){
+    public ResponseEntity<ArticleViewResponse> findArticle(@PathVariable long id){
         Optional<Article> article = articleService.findById(id);
-        return article.map(a -> ResponseEntity.ok().body(new ArticleResponse(a)))
+        return article.map(a -> ResponseEntity.ok().body(new ArticleViewResponse(a)))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article not found")); // optional이 비어 있을 때
     }
 
@@ -53,22 +53,5 @@ public class ArticleApiController {
         Article updatedArticle = articleService.update(id, request);
         return ResponseEntity.ok().body(updatedArticle);
     }
-
-    // 게시물 검색
-//    @GetMapping(params = "query")
-//    public List<ArticleIndex> searchArticles(@RequestParam(name = "query") String keyword) throws IOException {
-//        SearchResponse<ArticleIndex> searchResponse = articleService.searchArticles(keyword);
-//        List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits(); // hit : 검색 결과
-//
-//        return listOfHits.stream()
-//                .map(hit -> {
-//                    ArticleIndex article = hit.source(); // 기존 ArticleIndex 객체
-//                    Objects.requireNonNull(article).setId(Long.parseLong(hit.id())); // Hit에서 ID 값을 설정
-//                    return article;
-//                })
-//                .toList();
-//    }
-
-
 
 }
