@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data // 자동으로 getter, setter, equals, hashCode, toString 등의 메서드를 생성
 @Entity
 @Table(name = "board_type")
-public class BoardType implements Serializable {
+public class BoardType{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

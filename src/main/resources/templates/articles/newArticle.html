@@ -15,11 +15,11 @@
             <article>
                 <!-- 아이디 정보 저장-->
                 <input type="hidden" id="article-id" th:value="${article.id}">
-                <input type="hidden" id="boardType-id" th:value="${boardTypeId}">
+                <input type="hidden" id="boardType-id" th:value="${boardType.id}">
                 <input type="hidden" id="article-author" th:value="${#authentication.principal.attributes['email']}">
 
                 <header class="mb-4">
-                    <h3 id="boardType" th:text="${boardName}">게시판 종류</h3>
+                    <h3 id="boardType" th:text="${boardType.name}">게시판 종류</h3>
                     <input type="text" class="form-control" placeholder="제목" id="title" th:value="${article.title}">
                 </header>
                 <section class="mb-5">

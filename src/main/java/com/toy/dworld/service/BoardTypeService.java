@@ -1,5 +1,6 @@
 package com.toy.dworld.service;
 
+import com.toy.dworld.dto.BoardTypeDTO;
 import com.toy.dworld.entity.BoardType;
 import com.toy.dworld.repo.BoardTypeRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class BoardTypeService {
         return boardTypeRepository.findAll();
     }
 
-    public Optional<BoardType> findById(Long id) {
-        return boardTypeRepository.findById(id);
+    public BoardTypeDTO findById(Long id) {
+        return new BoardTypeDTO(boardTypeRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("id에 맞는 boardType이 존재하지 않음")));
     }
 }

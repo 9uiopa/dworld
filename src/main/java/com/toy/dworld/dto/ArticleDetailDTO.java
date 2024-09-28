@@ -7,6 +7,7 @@ import java.util.List;
 
 @Builder
 @Getter
+// 게시물 상세 조회용
 public class ArticleDetailDTO {
     private Long id;
     private String title;
@@ -14,5 +15,4 @@ public class ArticleDetailDTO {
     private String author;
     private String boardTypeName;
     private List<CommentDTO> comments;
-
 }

@@ -20,7 +20,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Data // 자동으로 getter, setter, equals, hashCode, toString 등의 메서드를 생성
 @Entity
-public class User implements OAuth2User, Serializable {
+public class User implements OAuth2User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

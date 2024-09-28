@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data // 자동으로 getter, setter, equals, hashCode, toString 등의 메서드를 생성
 @Entity
-public class Article implements Serializable {
+public class Article{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

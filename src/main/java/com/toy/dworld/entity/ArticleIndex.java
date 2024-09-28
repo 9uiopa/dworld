@@ -25,5 +25,4 @@ public class ArticleIndex {
     private String email;
     private Long boardTypeId;
     private LocalDateTime createdAt = LocalDateTime.now();
-
 }

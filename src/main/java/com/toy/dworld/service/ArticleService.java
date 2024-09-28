@@ -5,11 +5,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import com.toy.dworld.dto.ArticleDetailDTO;
-import com.toy.dworld.dto.CommentDTO;
+import com.toy.dworld.dto.*;
 import com.toy.dworld.entity.Article;
-import com.toy.dworld.dto.AddArticleRequest;
-import com.toy.dworld.dto.UpdateArticleRequest;
 import com.toy.dworld.entity.ArticleIndex;
 import com.toy.dworld.entity.BoardType;
 import com.toy.dworld.entity.User;
@@ -45,12 +42,12 @@ public class ArticleService {
     private final BoardTypeRepository boardTypeRepository;
     private final CommentService commentService;
 
-    public Article save(AddArticleRequest request, String email) throws IOException {
+    public ArticleViewResponse save(AddArticleRequest request, String email) throws IOException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         BoardType boardType = boardTypeRepository.findById(request.getBoardTypeId())
                 .orElseThrow(() -> new RuntimeException("Board type not found"));
-        Article newArticle = articleRepository.save(request.toEntity(user,boardType));
+        ArticleViewResponse newArticle = new ArticleViewResponse(articleRepository.save(request.toEntity(user,boardType)));
 
         //elasticsearch index: document 저장
         elasticsearchClient.index(i -> i
@@ -62,13 +59,20 @@ public class ArticleService {
         return newArticle;
     }
 
-    public Page<Article> getArticlesByBoardType(long boardTypeId,int page, int size) {
-        return articleRepository.findByBoardTypeId(boardTypeId,PageRequest.of(page, size, by(DESC,"createdAt")));
+    public Page<ArticleViewResponse> getArticlesByBoardType(long boardTypeId,int page, int size) {
+        return articleRepository.findByBoardTypeId(
+                boardTypeId,
+                PageRequest.of(page, size, by(DESC,"createdAt")))
+                .map(ArticleViewResponse::new);
     }
 
     @Cacheable(value = "hotArticles", key = "'hot_' + #page + '_' + #size") //value : 캐시이름 key : 키 , key의 value : 메소드 반환값
-    public Page<Article> getHotArticles(int page, int size){
-        return articleRepository.findByUpvotesGreaterThanEqual(HOT_ARTICLE_THRESHOLD, PageRequest.of(page,size,by(DESC,"createdAt")));
+    public Page<ArticleViewResponse> getHotArticles(int page, int size){
+        Page<Article> articles = articleRepository.findByUpvotesGreaterThanEqual(
+                HOT_ARTICLE_THRESHOLD,
+                PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"))
+        );
+        return articles.map(ArticleViewResponse::new); // 엔티티 -> DTO 변환
     }
 
     public ArticleDetailDTO getArticleDetail(long id){
@@ -100,7 +104,7 @@ public class ArticleService {
     }
 
     @Transactional //트랜잭션 시작, 메서드 종료되면 트랜잭션이 커밋 or 롤백됨 - 일관성과 무결성을 유지
-    public Article update(long id, UpdateArticleRequest request) throws IOException {
+    public ArticleViewResponse update(long id, UpdateArticleRequest request) throws IOException {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
         article.update(request.getTitle(), request.getContent());
@@ -111,10 +115,10 @@ public class ArticleService {
                 .document(request.toDocument())
                 .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
 
-        return article;
+        return new ArticleViewResponse(article);
     }
 
-    public Page<ArticleIndex> searchArticles(String keyword, int page, int size) throws IOException {
+    public Page<ArticleIndexDTO> searchArticles(String keyword, int page, int size) throws IOException {
         Pageable pageable = PageRequest.of(page, size,by(DESC,"createdAt"));
         // 쿼리 생성
         Query query = Query.of(q -> q.multiMatch(mmq -> mmq
@@ -137,11 +141,11 @@ public class ArticleService {
         SearchResponse<ArticleIndex> searchResponse = elasticsearchClient.search(request, ArticleIndex.class);
         List<Hit<ArticleIndex>> listOfHits = searchResponse.hits().hits();
 
-        List<ArticleIndex> articles = listOfHits.stream()
+        List<ArticleIndexDTO> articles = listOfHits.stream()
                 .map(hit -> {
                     ArticleIndex article = hit.source();
                     article.setId(Long.parseLong(hit.id()));
-                    return article;
+                    return new ArticleIndexDTO(article);
                 })
                 .collect(Collectors.toList());
 

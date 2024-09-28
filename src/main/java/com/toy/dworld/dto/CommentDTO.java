@@ -19,6 +19,6 @@ public class CommentDTO {
     private String author;
     private LocalDateTime createdAt;
     private List<CommentDTO> childComments;
-    private Long parentCommentId; // 부모 댓글의 ID를 참조
+    private Long parentCommentId;
 
 }

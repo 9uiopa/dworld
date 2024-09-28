@@ -16,7 +16,6 @@ public class UserController {
     public String getUserInfo() {
         // 인증 유저 정보
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("@@@@@@@@@@@@@ authentication : " + authentication.toString() );
         if (authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof OAuth2User) {

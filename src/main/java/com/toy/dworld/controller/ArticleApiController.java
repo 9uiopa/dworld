@@ -27,10 +27,10 @@ public class ArticleApiController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request,
+    public ResponseEntity<ArticleViewResponse> addArticle(@RequestBody @Validated AddArticleRequest request,
     @AuthenticationPrincipal OAuth2User oauth2User) throws IOException {
         Map<String, Object> kakaoAccount = oauth2User.getAttribute("kakao_account");
-        Article newArticle = articleService.save(request, (String) kakaoAccount.get("email"));
+        ArticleViewResponse newArticle = articleService.save(request, (String) kakaoAccount.get("email"));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newArticle);
     }
@@ -49,8 +49,8 @@ public class ArticleApiController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Article> updateArticle(@PathVariable long id, @RequestBody UpdateArticleRequest request) throws IOException {
-        Article updatedArticle = articleService.update(id, request);
+    public ResponseEntity<ArticleViewResponse> updateArticle(@PathVariable long id, @RequestBody UpdateArticleRequest request) throws IOException {
+        ArticleViewResponse updatedArticle = articleService.update(id, request);
         return ResponseEntity.ok().body(updatedArticle);
     }
 
