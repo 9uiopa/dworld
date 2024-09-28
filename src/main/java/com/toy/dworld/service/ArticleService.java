@@ -16,7 +16,6 @@ import com.toy.dworld.repo.UserRepository;
 import com.toy.dworld.utils.CommentConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package com.toy.dworld.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @Data // 자동으로 getter, setter, equals, hashCode, toString 등의 메서드를 생성
-@Document(indexName = "article",createIndex = true)
+@Document(indexName = "article")
 @JsonIgnoreProperties(ignoreUnknown = true) // 기본으로 존재하는 _class 요소를 무시하기 위해서 사용
 public class ArticleIndex {
     @Id
