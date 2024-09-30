@@ -40,6 +40,7 @@ out/
 .env
 /mysqldb/mysql.sock
 application-dev.yml
+mysql_init.sql
 
 ### volume###
 elasticsearchdb/

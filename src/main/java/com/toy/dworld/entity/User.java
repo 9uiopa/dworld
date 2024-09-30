@@ -37,7 +37,7 @@ public class User implements OAuth2User{
 
     @Override
     public Map<String, Object> getAttributes() { // 사용자 정보 반환
-        return null;
+        return Map.of("email", this.email);  // 이메일을 반환하는 속성 추가
     }
 
     @Override

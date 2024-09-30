@@ -4,8 +4,14 @@ services:
     image: mysql:8.0
     ports:
       - "3306:3306" # 로컬 3306 접근시 컨테이너 3306 port로 이동
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes: # 도커 볼륨
-      - mysqldb:/var/lib/mysql
+      - mysqldb:/var/lib/mysql  # 데이터 지속성을 위한 볼륨
+      - ./mysql_init.sql:/docker-entrypoint-initdb.d/mysql_init.sql  # 초기화 스크립트인데 파일 생성은 되는데 초기화 안됨
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - app-network

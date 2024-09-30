@@ -1,11 +1,11 @@
-CREATE TABLE board_type
+CREATE TABLE IF NOT EXISTS board_type
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     CONSTRAINT unique_name UNIQUE (name)
 );
 
-CREATE TABLE user
+CREATE TABLE IF NOT EXISTS user
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     email      VARCHAR(255) UNIQUE NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE user
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE article
+CREATE TABLE IF NOT EXISTS article
 (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     title         VARCHAR(50) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE article
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-CREATE TABLE comment
+CREATE TABLE IF NOT EXISTS comment
 (
     id                BIGINT AUTO_INCREMENT PRIMARY KEY,
     article_id        BIGINT,
@@ -39,7 +39,7 @@ CREATE TABLE comment
     FOREIGN KEY (parent_comment_id) REFERENCES comment (id) ON DELETE CASCADE
 );
 
-CREATE TABLE vote
+CREATE TABLE IF NOT EXISTS vote
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id    BIGINT,

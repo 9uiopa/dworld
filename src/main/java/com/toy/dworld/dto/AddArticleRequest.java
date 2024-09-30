@@ -22,6 +22,7 @@ public class AddArticleRequest {
     private String title;
     @NotNull
     private String content;
+    private String email;
     @NotNull
     private Long boardTypeId;
 
