@@ -43,8 +43,6 @@ spring:
       repository-type: default
     timeout: 300 #세션 데이터 유효시간, 단위-초, 기본값 무한대
 
-
-
 logging:
   level:
     org:
@@ -52,7 +50,6 @@ logging:
         security: DEBUG
         data:
           elasticsearch: DEBUG
-
       elasticsearch:
         client: DEBUG
     root: DEBUG
