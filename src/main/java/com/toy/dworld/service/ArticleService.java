@@ -21,6 +21,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -59,10 +60,23 @@ public class ArticleService {
     }
 
     public Page<ArticleViewResponse> getArticlesByBoardType(long boardTypeId,int page, int size) {
-        return articleRepository.findByBoardTypeId(
+        Page<Article> articles = articleRepository.findByBoardTypeId(
                 boardTypeId,
-                PageRequest.of(page, size, by(DESC,"createdAt")))
-                .map(ArticleViewResponse::new);
+                PageRequest.of(page, size, by(DESC, "createdAt")));
+        return toArticleViewResponsePage(articles);
+    }
+
+    // Article -> ArticleViewResponse 변환 및 commentCount 설정
+    @NotNull
+    private Page<ArticleViewResponse> toArticleViewResponsePage(Page<Article> articles) {
+        List<ArticleViewResponse> articleViewResponses = articles.stream()
+                .map(article -> {
+                    ArticleViewResponse response = new ArticleViewResponse(article);
+                    response.setCommentCount(commentService.countComments(article.getId()));
+                    return response;
+                })
+                .toList();
+        return new PageImpl<>(articleViewResponses, articles.getPageable(), articles.getTotalElements());
     }
 
     @Cacheable(value = "hotArticles", key = "'hot_' + #page + '_' + #size") //value : 캐시이름 key : 키 , key의 value : 메소드 반환값
@@ -71,7 +85,7 @@ public class ArticleService {
                 HOT_ARTICLE_THRESHOLD,
                 PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"))
         );
-        return articles.map(ArticleViewResponse::new); // 엔티티 -> DTO 변환
+        return toArticleViewResponsePage(articles);
     }
 
     public ArticleDetailDTO getArticleDetail(long id){

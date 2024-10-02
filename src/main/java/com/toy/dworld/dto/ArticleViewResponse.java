@@ -3,6 +3,7 @@ package com.toy.dworld.dto;
 import com.toy.dworld.entity.Article;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ public class ArticleViewResponse implements Serializable {
     private String content;
     private String author;
     private LocalDateTime createdAt;
+    @Setter
+    private int commentCount = 0;
 
     public ArticleViewResponse(Article article){
         this.id = article.getId();

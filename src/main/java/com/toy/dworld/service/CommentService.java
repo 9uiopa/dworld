@@ -35,4 +35,7 @@ public class CommentService {
         commentRepository.save(comment);
         return comment;
     }
+    public int countComments(long articleId){
+        return commentRepository.countByArticleId(articleId);
+    }
 }
