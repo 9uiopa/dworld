@@ -84,6 +84,7 @@ public class ArticleService {
                 .id(article.getId())
                 .title(article.getTitle())
                 .author(article.getUser().getEmail())
+                .content(article.getContent())
                 .comments(commentDTOList)
                 .boardTypeName(article.getBoardType().getName())
                 .build();
