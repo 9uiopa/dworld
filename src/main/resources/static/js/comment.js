@@ -20,7 +20,7 @@ commentArea.addEventListener('click',ev => {
             },
             body: JSON.stringify({
                 content: textarea.value,
-                author: author,
+                author: document.getElementById('main-comment-form').value,
                 parentCommentId: parentCommentId
             })
         })

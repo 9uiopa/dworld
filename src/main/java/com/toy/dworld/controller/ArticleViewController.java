@@ -1,8 +1,6 @@
 package com.toy.dworld.controller;
 
-import com.toy.dworld.dto.ArticleIndexDTO;
-import com.toy.dworld.dto.ArticleViewResponse;
-import com.toy.dworld.dto.BoardTypeDTO;
+import com.toy.dworld.dto.*;
 import com.toy.dworld.service.ArticleService;
 import com.toy.dworld.service.BoardTypeService;
 import com.toy.dworld.service.CommentService;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
+import java.util.List;
+
 import static com.toy.dworld.Constants.PAGE_SIZE;
 
 @Slf4j

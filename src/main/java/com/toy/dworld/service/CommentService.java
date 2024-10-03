@@ -18,9 +18,11 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+
     public List<Comment> getCommentsByArticleId(Long articleId){
         return commentRepository.findByArticleIdAndParentCommentIsNull(articleId);
     }
+
     public Comment addComment(long articleId, AddCommentRequest request) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("article not found while adding comments"));
         User user = userRepository.findByEmail(request.getAuthor()).orElseThrow(() -> new RuntimeException("user not found while adding comments"));
@@ -35,6 +37,7 @@ public class CommentService {
         commentRepository.save(comment);
         return comment;
     }
+
     public int countComments(long articleId){
         return commentRepository.countByArticleId(articleId);
     }

@@ -55,7 +55,7 @@
                 <div th:if="${#authentication.principal != 'anonymousUser'}" class="mt-4 comment-form">
                     <label for="comment-content"></label>
                     <input type="hidden" id="main-comment-form" class="comment-form-author"
-                           th:value="${#authentication.principal.attributes['email']}">
+                           th:value="${#authentication.principal.attributes['kakao_account']['email']}">
                     <textarea class="form-control comment-textarea" id="comment-content" rows="3" placeholder="댓글을 입력하세요"></textarea>
                     <button type="button" class="btn btn-primary mt-2 submit-comment-btn" id="submit-comment-btn">댓글 달기</button>
                 </div>
