@@ -33,7 +33,9 @@ services:
       - app-network
 
   elasticsearch:
-    image: elasticsearch:7.17.9
+    build:
+      context: .
+      dockerfile: Dockerfile-es-nori
     ports:
       - '9200:9200'
     environment:

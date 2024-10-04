@@ -1,0 +1,8 @@
+# Dockerfile
+FROM elasticsearch:7.17.9
+
+# 플러그인 설치
+RUN bin/elasticsearch-plugin install analysis-nori
+
+# 추가적인 환경변수 설정이 필요하다면 여기에 추가
+ENV discovery.type=single-node
