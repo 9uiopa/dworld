@@ -31,7 +31,6 @@ public class ArticleApiController {
     @AuthenticationPrincipal OAuth2User oauth2User) throws IOException {
         Map<String, Object> kakaoAccount = oauth2User.getAttribute("kakao_account");
         ArticleViewResponse newArticle = articleService.save(request, (String) kakaoAccount.get("email"));
-        log.debug("####### kakaoAccount.get(\"email\") : " + (String) kakaoAccount.get("email"));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newArticle);
     }

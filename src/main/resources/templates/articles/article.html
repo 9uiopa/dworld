@@ -34,13 +34,13 @@
 
                 <!-- 수정 버튼 -->
                 <button type="button" id="modify-btn"
-                        th:if="${#authentication.principal != 'anonymousUser' and article.author == #authentication.principal.attributes['email']}"
-                        th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"
+                        th:if="${#authentication.principal != 'anonymousUser' and article.author == #authentication.principal.attributes['kakao_account']['email']}"
+                        th:onclick="|location.href='@{/new-article(id=${article.id}, boardType=${article.boardTypeId})}'|"
                         class="btn btn-primary btn-sm">수정</button>
 
                 <!-- 삭제 버튼 -->
                 <button type="button" id="delete-btn"
-                        th:if="${#authentication.principal != 'anonymousUser' and article.author == #authentication.principal.attributes['email']}"
+                        th:if="${#authentication.principal != 'anonymousUser' and article.author == #authentication.principal.attributes['kakao_account']['email']}"
                         class="btn btn-secondary btn-sm">삭제</button>
 
             </article>

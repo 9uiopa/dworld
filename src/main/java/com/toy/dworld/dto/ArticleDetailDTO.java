@@ -13,6 +13,7 @@ public class ArticleDetailDTO {
     private String title;
     private String content;
     private String author;
+    private Long boardTypeId;
     private String boardTypeName;
     private List<CommentDTO> comments;
 }

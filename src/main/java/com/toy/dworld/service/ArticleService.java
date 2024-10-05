@@ -100,6 +100,7 @@ public class ArticleService {
                 .author(article.getUser().getEmail())
                 .content(article.getContent())
                 .comments(commentDTOList)
+                .boardTypeId(article.getBoardType().getId())
                 .boardTypeName(article.getBoardType().getName())
                 .build();
     }

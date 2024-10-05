@@ -2,6 +2,8 @@ package com.toy.dworld.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,7 +14,6 @@ import java.time.LocalDateTime;
 @Data // 자동으로 getter, setter, equals, hashCode, toString 등의 메서드를 생성
 @Entity
 public class Article{
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id" , updatable = false)

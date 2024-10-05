@@ -62,9 +62,9 @@ public class ArticleViewController {
     @GetMapping("/new-article")
     public String articleForm(@RequestParam(required = false) Long id,
                              @RequestParam(name = "boardType", required = true) Long boardTypeId  ,Model model) {
+        BoardTypeDTO boardType = boardTypeService.findById(boardTypeId);
+        model.addAttribute("boardType", boardType);
         if (id == null) { // 새 게시글 작성
-            BoardTypeDTO boardType = boardTypeService.findById(boardTypeId);
-            model.addAttribute("boardType", boardType);
             model.addAttribute("article", new ArticleViewResponse());
         } else { // 게시글 수정
            ArticleViewResponse article = new ArticleViewResponse(articleService.findById(id)
