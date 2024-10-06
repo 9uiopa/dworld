@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS article
     board_type_id BIGINT      NOT NULL,
     created       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    enabled       BIT       DEFAULT true,
     FOREIGN KEY (board_type_id) REFERENCES board_type (id) ,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
@@ -34,6 +35,8 @@ CREATE TABLE IF NOT EXISTS comment
     parent_comment_id BIGINT NULL,
     content           TEXT NOT NULL,
     created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    enabled           BIT       DEFAULT true,
+
     FOREIGN KEY (article_id) REFERENCES article (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (parent_comment_id) REFERENCES comment (id) ON DELETE CASCADE

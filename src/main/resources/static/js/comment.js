@@ -42,6 +42,28 @@ commentArea.addEventListener('click',ev => {
     }
 })
 
+//댓글 삭제
+commentArea.addEventListener('click',ev => {
+    if (ev.target && ev.target.classList.contains('comment-delete-btn')) {// 댓글 삭제 버튼 눌렀을 때
+        const targetComment = ev.target.closest('.comment');
+        const commentId = targetComment.getAttribute('data-comment-id')
+        fetch(`/api/comments/${commentId}`,{
+            method:'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(response => {
+                location.reload();
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation - delete comment:', error);
+                alert('댓글 삭제에 실패했습니다. 다시 시도해주세요.');
+            });
+
+    }
+})
+
 //대댓글 폼 추가
 const childCommentsButtons = document.querySelectorAll('.comment-form-btn');
 
@@ -89,6 +111,8 @@ childCommentsButtons.forEach(button => {
         }
     });
 });
+
+
 
 //시간
 // function timeForToday(value) {

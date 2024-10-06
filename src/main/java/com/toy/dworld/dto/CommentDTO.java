@@ -19,5 +19,6 @@ public class CommentDTO {
     private LocalDateTime createdAt;
     private List<CommentDTO> childComments;
     private Long parentCommentId;
+    private boolean enabled;
 
 }

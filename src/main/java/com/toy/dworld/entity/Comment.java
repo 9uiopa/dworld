@@ -1,12 +1,9 @@
 package com.toy.dworld.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +12,6 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +37,9 @@ public class Comment {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(nullable = false)
+    private boolean enabled = true;
+
     @Builder
     public Comment(String content, Article article, User user,Comment parentComment){
         this.content = content;
@@ -50,6 +49,12 @@ public class Comment {
     }
     public void update(String content){
         this.content = content;
+    }
 
+    public void delete(){
+        this.enabled = false;
+    }
+    public String getContent() {
+        return enabled ? content : "삭제된 댓글입니다.";
     }
 }

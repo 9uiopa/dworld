@@ -41,4 +41,11 @@ public class CommentService {
     public int countComments(long articleId){
         return commentRepository.countByArticleId(articleId);
     }
+
+    public void deleteComment(long id) {
+        Comment comment = commentRepository.findById(id).orElseThrow();
+        comment.delete();
+        commentRepository.save(comment);
+
+    }
 }

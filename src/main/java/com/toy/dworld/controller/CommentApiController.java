@@ -9,16 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/articles/{articleId}/comments")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class CommentApiController {
     private final CommentService commentService;
 
-    @PostMapping
+    @PostMapping("/articles/{articleId}/comments")
     public ResponseEntity<Comment> addComment(@PathVariable long articleId, @RequestBody @Validated AddCommentRequest request){
         Comment addedComment = commentService.addComment(articleId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedComment);
+    }
+
+    @PatchMapping("/comments/{commentId}")
+    public ResponseEntity<Void> softDeleteComment(@PathVariable long commentId){
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok().build();
     }
 
 }

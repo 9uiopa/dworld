@@ -24,6 +24,7 @@ public class CommentConverter {
                 .createdAt(comment.getCreatedAt())
                 .parentCommentId(parentCommentId) // 부모 댓글 ID
                 .childComments(childCommentDTOs) // 자식 댓글 DTO 리스트
+                .enabled(comment.isEnabled())
                 .build();
     }
 }

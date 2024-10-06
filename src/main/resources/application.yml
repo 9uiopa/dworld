@@ -23,7 +23,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update # 로컬 db 스키마를 JPA 엔티티와 일치하도록 생성하거나 수정해준다.
+      ddl-auto: update # 로컬 db 스키마를 JPA 엔티티와 일치하도록 생성하거나 수정한다.
 
   elasticsearch:
     uris: http://elasticsearch:9200
@@ -47,9 +47,9 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: INFO
         data:
-          elasticsearch: DEBUG
+          elasticsearch: INFO
       elasticsearch:
-        client: DEBUG
+        client: INFO
     root: DEBUG

@@ -13,6 +13,12 @@
             <p><strong th:text="${comment.author}"></strong>
                 <span th:text="${comment.createdAt}"></span>
                 <span style="cursor: pointer;" class="badge rounded-pill text-bg-secondary comment-form-btn">대댓글</span>
+                <!--삭제버튼-->
+                <button type="button"
+                        th:if="${#authentication.principal != 'anonymousUser'
+                                    and comment.author == #authentication.principal.attributes['kakao_account']['email']
+                                    and comment.enabled == true}"
+                        class="btn btn-secondary btn-sm comment-delete-btn">삭제</button>
             </p>
             <p th:text="${comment.content}"></p>
             <div class="childComment">
