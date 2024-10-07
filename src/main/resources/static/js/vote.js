@@ -68,6 +68,7 @@ function countUpvotes(){
             console.error('Error:', error); // 에러 처리
         });
 }
+
 function countDownvotes(){
     fetch(`/api/articles/${articleId}/downvotes`,{
         method: 'GET'
@@ -80,6 +81,3 @@ function countDownvotes(){
             console.error('Error:', error); // 에러 처리
         });
 }
-
-countUpvotes();
-countDownvotes()

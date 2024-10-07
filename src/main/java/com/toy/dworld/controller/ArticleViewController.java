@@ -24,7 +24,7 @@ public class ArticleViewController {
     private final ArticleService articleService;
     private final BoardTypeService boardTypeService;
 
-    @GetMapping(value = "/articles")
+    @GetMapping({"/articles","/"})
     public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardType,
                                         @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException{
         model.addAttribute("boardType",boardType);
