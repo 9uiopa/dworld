@@ -43,6 +43,7 @@ public class ArticleService {
     private final CommentService commentService;
 
     public ArticleViewResponse save(AddArticleRequest request, String email) throws IOException {
+        // db 저장
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         BoardType boardType = boardTypeRepository.findById(request.getBoardTypeId())
@@ -55,7 +56,6 @@ public class ArticleService {
                 .document(request.toDocument(email))
                 .id(newArticle.getId().toString())
                 .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
-        // jpa 레코드 삽입
         return newArticle;
     }
 
