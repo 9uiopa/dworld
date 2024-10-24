@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
+@Setter
 // comment 정보없이 간단한 article DTO
 public class ArticleViewResponse implements Serializable {
     private Long id;
@@ -17,7 +18,6 @@ public class ArticleViewResponse implements Serializable {
     private String content;
     private String author;
     private LocalDateTime createdAt;
-    @Setter
     private int commentCount = 0;
 
     public ArticleViewResponse(Article article){

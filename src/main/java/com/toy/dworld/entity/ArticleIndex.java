@@ -1,5 +1,6 @@
 package com.toy.dworld.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -23,5 +25,5 @@ public class ArticleIndex {
     private String content;
     private String email;
     private Long boardTypeId;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String createdAt;
 }

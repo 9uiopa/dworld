@@ -9,6 +9,7 @@ import com.toy.dworld.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -28,11 +29,22 @@ public class ArticleApiController {
 
     @PostMapping
     public ResponseEntity<ArticleViewResponse> addArticle(@RequestBody @Validated AddArticleRequest request,
-    @AuthenticationPrincipal OAuth2User oauth2User) throws IOException {
-        Map<String, Object> kakaoAccount = oauth2User.getAttribute("kakao_account");
-        ArticleViewResponse newArticle = articleService.save(request, (String) kakaoAccount.get("email"));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(newArticle);
+                                                          @AuthenticationPrincipal OAuth2User oauth2User) throws IOException {
+        try {
+            Map<String, Object> kakaoAccount = oauth2User.getAttribute("kakao_account");
+            if (kakaoAccount == null) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+            }
+            String email = (String) kakaoAccount.get("email");
+            request.setEmail(email);
+            ArticleViewResponse newArticle = articleService.save(request, email);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(newArticle);
+        } catch (Exception e) {
+            e.printStackTrace(); // 또는 로깅 라이브러리를 사용하여 로그를 남김
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving article", e);
+        }
     }
 
     @GetMapping("/{id}")

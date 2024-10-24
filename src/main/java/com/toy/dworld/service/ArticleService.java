@@ -53,7 +53,7 @@ public class ArticleService {
         //elasticsearch index: document 저장
         elasticsearchClient.index(i -> i
                 .index("article")
-                .document(request.toDocument(email))
+                .document(request.toDocument())
                 .id(newArticle.getId().toString())
                 .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
         return newArticle;
@@ -149,8 +149,6 @@ public class ArticleService {
                 .from(page)  // 시작점 설정
                 .size(size)  // 페이지 크기 설정
         );
-
-        log.debug("SearchRequest: " + request.toString());
 
         //elastic search - 쿼리 수행
         SearchResponse<ArticleIndex> searchResponse = elasticsearchClient.search(request, ArticleIndex.class);

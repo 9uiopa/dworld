@@ -41,6 +41,7 @@ out/
 /mysqldb/mysql.sock
 application-dev.yml
 mysql_init.sql
+/src/test/resources/application.yml
 
 ### volume###
 elasticsearchdb/

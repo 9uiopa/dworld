@@ -14,7 +14,7 @@ import java.util.Map;
 
 @NoArgsConstructor
 @Data // 자동으로 getter, setter, equals, hashCode, toString 등의 메서드를 생성
-@Entity
+@Entity(name = "users")
 public class User implements OAuth2User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,6 @@ public class User implements OAuth2User{
         this.email = email;
         this.password = password;
     }
-
 
     @Override
     public Map<String, Object> getAttributes() { // 사용자 정보 반환

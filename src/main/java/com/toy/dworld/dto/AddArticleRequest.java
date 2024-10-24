@@ -7,11 +7,15 @@ import com.toy.dworld.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+
+import static java.time.LocalDateTime.now;
 
 
 @AllArgsConstructor
@@ -22,6 +26,7 @@ public class AddArticleRequest {
     private String title;
     @NotNull
     private String content;
+    @Setter
     private String email;
     @NotNull
     private Long boardTypeId;
@@ -35,12 +40,13 @@ public class AddArticleRequest {
                 .build();
     }
 
-    public ArticleIndex toDocument(String email){
+    public ArticleIndex toDocument(){
         return ArticleIndex.builder()
                 .title(title)
                 .content(content)
                 .email(email)
                 .boardTypeId(boardTypeId)
+                .createdAt(now().toString())
                 .build();
     }
 }

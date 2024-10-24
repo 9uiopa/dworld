@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS board_type
     CONSTRAINT unique_name UNIQUE (name)
 );
 
-CREATE TABLE IF NOT EXISTS user
+CREATE TABLE IF NOT EXISTS users
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     email      VARCHAR(255) UNIQUE NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS article
     updated       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     enabled       BIT       DEFAULT true,
     FOREIGN KEY (board_type_id) REFERENCES board_type (id) ,
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE IF NOT EXISTS comment
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS comment
     enabled           BIT       DEFAULT true,
 
     FOREIGN KEY (article_id) REFERENCES article (id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (parent_comment_id) REFERENCES comment (id) ON DELETE CASCADE
 );
 
@@ -50,6 +50,6 @@ CREATE TABLE IF NOT EXISTS vote
     vote_type  ENUM('upvote', 'downvote') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY unique_vote (user_id, article_id),
-    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (article_id) REFERENCES article (id) ON DELETE CASCADE
 );

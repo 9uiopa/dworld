@@ -13,7 +13,7 @@ public class ArticleIndexDTO{
     private String content;
     private String email;
     private Long boardTypeId;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     public  ArticleIndexDTO(ArticleIndex articleIndex){
         this.id = articleIndex.getId();
