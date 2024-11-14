@@ -35,7 +35,7 @@ logging:
       springframework:
         security: INFO
         data:
-          elasticsearch: INFO
+          elasticsearch: DEBUG
       elasticsearch:
-        client: INFO
+        client: DEBUG
     root: DEBUG
