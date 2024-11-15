@@ -27,8 +27,5 @@ WORKDIR /app
 # build(전 단계에서 AS build로 정의) 단계에서 생성된 JAR 파일 복사 (컨테이너 jar 파일 -> 컨테이너 app 내에 .jar로 복사)
 COPY --from=build /app/build/libs/dworld.jar ./dworld.jar
 
-# 컨테이너 포트 노출(호스트와 연결할 컨테이너의 port 지정)
-EXPOSE 8080
-
 # 애플리케이션 실행 명령 설정 , 애플리케이션 실행
 ENTRYPOINT ["java", "-jar", "dworld.jar"]

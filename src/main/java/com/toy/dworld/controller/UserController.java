@@ -20,7 +20,6 @@ public class UserController {
             Object principal = authentication.getPrincipal();
             if (principal instanceof OAuth2User) {
                 String name = ((OAuth2User) principal).getName();
-                log.info("@@@@@@@@@@@@@ 현재 로그인된 사용자: " + name);
             } else {
                 log.info("@@@@@@@@@@@@@ 현재 로그인된 사용자: " + principal.toString());
             }
