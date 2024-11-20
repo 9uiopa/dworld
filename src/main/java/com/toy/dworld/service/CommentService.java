@@ -1,6 +1,7 @@
 package com.toy.dworld.service;
 
 import com.toy.dworld.dto.AddCommentRequest;
+import com.toy.dworld.dto.CommentDTO;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.Comment;
 import com.toy.dworld.entity.User;
@@ -23,7 +24,7 @@ public class CommentService {
         return commentRepository.findByArticleIdAndParentCommentIsNull(articleId);
     }
 
-    public Comment addComment(long articleId, AddCommentRequest request) {
+    public CommentDTO addComment(long articleId, AddCommentRequest request) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("article not found while adding comments"));
         User user = userRepository.findByEmail(request.getAuthor()).orElseThrow(() -> new RuntimeException("user not found while adding comments"));
         Long ParentCommentId = request.getParentCommentId();
@@ -35,7 +36,7 @@ public class CommentService {
             comment = request.toEntity(article, user,parentComment);
         }
         commentRepository.save(comment);
-        return comment;
+        return new CommentDTO(comment);
     }
 
     public int countComments(long articleId){

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -28,7 +29,9 @@ public class CommentDTO {
         this.author = comment.getUser().getEmail();
         this.createdAt = comment.getCreatedAt();
         this.childComments = comment.getChildComments().stream().map(CommentDTO::new).toList();
-        this.parentCommentId = comment.getParentComment().getId();
+        this.parentCommentId = Optional.ofNullable(comment.getParentComment())
+                .map(Comment::getId)
+                .orElse(null);
         this.enabled = comment.isEnabled();
     }
 

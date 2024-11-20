@@ -28,18 +28,15 @@ commentArea.addEventListener('click',ev => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
-                return response.text(); // JSON 파싱 전 원본 응답 출력
+                return response.json(); // JSON 파싱 전 원본 응답 출력
             })
             .then(data => {
-                console.log("Raw Response:", data); // 서버 응답을 로그에 출력
-                const parsedData = JSON.parse(data); // JSON 파싱 시도
-                console.log("Parsed Data:", parsedData); // 파싱된 데이터 확인
-                location.reload();
-
+                console.log("Parsed Data:", data); // 파싱된 데이터 확인
+                location.reload()
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation - comment:', error);
-                alert('댓글 등록에 실패했습니다. 다시 시도해주세요.');
+                alert('댓글 등록 중 에러 발생. 나중에 다시 시도해주세요');
             });
 
     }

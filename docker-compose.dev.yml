@@ -61,4 +61,5 @@ networks:
     driver: bridge
 
 volumes:
+  mysqldb:
   elasticsearchdb:
