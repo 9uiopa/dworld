@@ -40,6 +40,7 @@ out/
 .env
 /mysqldb/mysql.sock
 application-dev.yml
+application-prod.yml
 mysql_init.sql
 /src/test/resources/application.yml
 

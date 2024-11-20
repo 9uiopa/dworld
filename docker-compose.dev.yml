@@ -1,0 +1,64 @@
+# 로컬용
+version: '3.8'
+services:
+  db: # 서비스 이름 : db
+    image: mysql:8.0
+    ports:
+      - "3306:3306" # 로컬 3306 접근시 컨테이너 3306 port로 이동
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes: # 도커 볼륨
+      - mysqldb:/var/lib/mysql  # 데이터 지속성을 위한 볼륨
+      - ./mysql_init.sql:/docker-entrypoint-initdb.d/mysql_init.sql  # 초기화 스크립트인데 파일 생성은 되는데 초기화 안됨
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - app-network
+    restart: always
+
+  web: # 서비스 이름 : web
+    build: . # 디렉토리에 있는 Dockerfile을 사용하여 이미지를 생성
+    ports:
+      - "8080:8080" # 호스트의 80 포트를 컨테이너 8080포트와 연결
+    environment:
+      - SPRING_REDIS_HOST=redis # Redis 호스트 이름
+      - SPRING_REDIS_PORT=6379 # Redis 포트 번호
+    depends_on:
+      - elasticsearch
+      - redis
+    restart: always
+    networks:
+      - app-network
+
+  elasticsearch:
+    build: #로컬에서 별도 dockfile로 nori 포함된 es build
+      context: .
+      dockerfile: Dockerfile-es-nori
+    ports:
+      - '9200:9200'
+    environment:
+      - discovery.type=single-node
+    volumes: # 도커 볼륨
+      - elasticsearchdb:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379" # Redis 기본 포트
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  elasticsearchdb:

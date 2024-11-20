@@ -28,9 +28,12 @@ commentArea.addEventListener('click',ev => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
-                return response.json(); // 응답 객체를 JSON 형태(javascript 객체)로 변환
+                return response.text(); // JSON 파싱 전 원본 응답 출력
             })
             .then(data => {
+                console.log("Raw Response:", data); // 서버 응답을 로그에 출력
+                const parsedData = JSON.parse(data); // JSON 파싱 시도
+                console.log("Parsed Data:", parsedData); // 파싱된 데이터 확인
                 location.reload();
 
             })
