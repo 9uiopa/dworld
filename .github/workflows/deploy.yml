@@ -32,8 +32,8 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t your_dockerhub_user/your_project_name:latest .
-        docker push your_dockerhub_user/your_project_name:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/dworld:${{ github.run_number }} .
+        docker push ${{ secrets.DOCKER_USERNAME }}/dworld:${{ github.run_number }}
 
   deploy:
     needs: build
@@ -48,6 +48,5 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
-          cd /path/to/your/project
           docker-compose pull
           docker-compose up -d
