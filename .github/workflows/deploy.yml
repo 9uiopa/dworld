@@ -54,5 +54,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
 
         script: |
+          export TAG=${{ github.run_number }}
+          sed -i "s|image:.*|image: ${{ secrets.DOCKER_USERNAME }}/dworld:${TAG}|" docker-compose.yml
           docker-compose pull
           docker-compose up -d
