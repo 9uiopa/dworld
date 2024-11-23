@@ -17,7 +17,7 @@ jobs:
     # 1.5 `application-prod.yml` 파일 생성
     - name: Create application-prod.yml
       run: |
-        echo "${{ secrets.APPLICATION_PROD_YML }}" > src/main/resources/application-prod.yml
+        echo "${{ secrets.APPLICATION_PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
         
     # 2. Java 빌드 및 테스트
     - name: Set up JDK 17
