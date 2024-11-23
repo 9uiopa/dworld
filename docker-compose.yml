@@ -1,4 +1,4 @@
-version: '3.8'
+# 배포용
 services:
   web: # 서비스 이름 : web
     #build: . # 디렉토리에 있는 Dockerfile을 사용하여 이미지를 생성
