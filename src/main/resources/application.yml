@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev  # 'dev' 프로파일 활성화
+    active: prod  # 프로파일 활성화
   jpa:
     show-sql: true # 쿼리 확인
     defer-datasource-initialization: true #  데이터베이스 초기화 스크립트가 JPA 엔티티 설정이 완료된 후에 실행되도록
