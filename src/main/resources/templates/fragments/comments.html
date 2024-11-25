@@ -20,7 +20,7 @@
                                     and comment.enabled == true}"
                         class="btn btn-secondary btn-sm comment-delete-btn">삭제</button>
             </p>
-            <p th:text="${comment.content}"></p>
+            <pre th:text="${comment.content}"></pre>
             <div class="childComment">
                 <div th:if="${#lists.size(comment.childComments) > 0}">
                     <div th:each="childComment : ${comment.childComments}">
