@@ -62,8 +62,9 @@ public class VoteService {
             throw new DataIntegrityViolationException("중복 추천은 불가능", ex);
         }
     }
-
+    // 게시물의 추천수 count
     private void updateArticleVoteCount(Article article, Vote vote) {
+        //추천일 때
         if (vote.getVoteType() == Vote.VoteType.UPVOTE) {
             article.setUpvotes(article.getUpvotes()+1);
             articleRepository.save(article);
@@ -73,6 +74,7 @@ public class VoteService {
                 VoteService proxy = applicationContext.getBean(VoteService.class);
                 proxy.evictHotArticleCache();
             }
+        //비추천일 때
         } else if (vote.getVoteType() == Vote.VoteType.DOWNVOTE) {
             article.setDownvotes(article.getDownvotes()+1);
             articleRepository.save(article);

@@ -102,6 +102,8 @@ public class ArticleService {
                 .comments(commentDTOList)
                 .boardTypeId(article.getBoardType().getId())
                 .boardTypeName(article.getBoardType().getName())
+                .upvotes(article.getUpvotes())
+                .downvotes(article.getDownvotes())
                 .build();
     }
 

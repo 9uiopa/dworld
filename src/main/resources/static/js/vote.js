@@ -1,6 +1,7 @@
 const upvoteBtn = document.getElementById('upvote-btn');
 const downvoteBtn = document.getElementById('downvote-btn');
 const articleId = document.getElementById('article-id').value;
+
 function vote(voteType) {
     return function() {
         fetch(`/api/articles/${articleId}/vote`, {
@@ -56,6 +57,7 @@ downvoteBtn.addEventListener('click', vote('DOWNVOTE'));
 
 const upvoteCnt =  document.getElementById('upvote-count');
 const downvoteCnt =  document.getElementById('downvote-count');
+
 function countUpvotes(){
     fetch(`/api/articles/${articleId}/upvotes`,{
         method: 'GET'

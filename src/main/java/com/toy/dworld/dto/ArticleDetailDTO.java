@@ -16,4 +16,6 @@ public class ArticleDetailDTO {
     private Long boardTypeId;
     private String boardTypeName;
     private List<CommentDTO> comments;
+    private int upvotes;
+    private int downvotes;
 }
