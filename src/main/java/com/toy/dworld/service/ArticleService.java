@@ -14,6 +14,7 @@ import com.toy.dworld.repo.ArticleRepository;
 import com.toy.dworld.repo.BoardTypeRepository;
 import com.toy.dworld.repo.UserRepository;
 import com.toy.dworld.utils.CommentConverter;
+import com.toy.dworld.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -99,6 +100,7 @@ public class ArticleService {
                 .title(article.getTitle())
                 .author(article.getUser().getEmail())
                 .content(article.getContent())
+                .createdAt(DateUtils.formatLocalDateTime(article.getCreatedAt()))
                 .comments(commentDTOList)
                 .boardTypeId(article.getBoardType().getId())
                 .boardTypeName(article.getBoardType().getName())

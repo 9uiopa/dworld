@@ -1,6 +1,7 @@
 package com.toy.dworld.dto;
 
 import com.toy.dworld.entity.Article;
+import com.toy.dworld.utils.DateUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +13,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Setter
 // comment 정보없이 간단한 article DTO
-public class ArticleViewResponse implements Serializable {
+public class ArticleViewResponse {
     private Long id;
     private String title;
     private String content;
     private String author;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private int commentCount = 0;
 
     public ArticleViewResponse(Article article){
@@ -25,6 +26,6 @@ public class ArticleViewResponse implements Serializable {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.author = article.getUser().getEmail();
-        this.createdAt = article.getCreatedAt();
+        this.createdAt = DateUtils.formatLocalDateTime(article.getCreatedAt());
     }
 }

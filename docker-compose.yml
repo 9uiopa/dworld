@@ -8,10 +8,12 @@ services:
     environment:
       - SPRING_REDIS_HOST=redis # Redis 호스트 이름
       - SPRING_REDIS_PORT=6379 # Redis 포트 번호
+      - TZ=Asia/Seoul # docker 컨테이너 timezone 설정
     depends_on:
       - elasticsearch
       - redis
     restart: always
+
     networks:
       - app-network
 

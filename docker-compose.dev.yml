@@ -25,6 +25,7 @@ services:
     environment:
       - SPRING_REDIS_HOST=redis # Redis 호스트 이름
       - SPRING_REDIS_PORT=6379 # Redis 포트 번호
+      - TZ=Asia/Seoul
     depends_on:
       - elasticsearch
       - redis
