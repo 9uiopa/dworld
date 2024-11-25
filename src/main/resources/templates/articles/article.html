@@ -18,8 +18,10 @@
                 </div>
                 <header class="mb-4">
                     <h1 class="fw-bolder mb-1" th:text="${article.title}"></h1>
-                    <!--                    <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>-->
-                    <div class="text" th:text="'작성자 : ' + ${article.author}"></div>
+                    <div class="d-flex justify-content-between">
+                        <div class="text" th:text="'작성자 : ' + ${article.author}"></div>
+                        <div class="text" th:text="${article.createdAt}"></div>
+                    </div>
                 </header>
                 <section class="mb-5">
                     <pre class="fs-5 mb-4" th:text="${article.content}"></pre>
@@ -52,7 +54,7 @@
                     </div>
                 </div>
                 <!-- 로그인 상태 확인 후 댓글 폼 표시 -->
-                <div th:if="${#authentication.principal != 'anonymousUser'}" class="mt-4 comment-form">
+                <div th:if="${#authentication.principal != 'anonymousUser'}" class="mt-2 comment-form">
                     <label for="comment-content"></label>
                     <input type="hidden" id="main-comment-form" class="comment-form-author"
                            th:value="${#authentication.principal.attributes['kakao_account']['email']}">
@@ -61,7 +63,7 @@
                 </div>
 
                 <!-- 로그인하지 않은 상태에서 댓글 폼을 숨김 -->
-                <div th:if="${#authentication.principal == 'anonymousUser'}" class="mt-4 comment-form">
+                <div th:if="${#authentication.principal == 'anonymousUser'}" class="mt-2 comment-form">
                     <p>로그인 후 댓글을 달 수 있습니다. <a href="/login">로그인 하러 가기</a></p>
                 </div>
             </div>
