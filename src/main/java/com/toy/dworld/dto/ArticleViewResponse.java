@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Setter
 // comment 정보없이 간단한 article DTO
-public class ArticleViewResponse {
+public class ArticleViewResponse implements Serializable{
     private Long id;
     private String title;
     private String content;
