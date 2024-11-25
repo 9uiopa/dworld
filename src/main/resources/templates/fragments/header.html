@@ -14,8 +14,8 @@
         <div sec:authorize="!isAuthenticated()">
             <a href="/login" class="btn btn-primary">로그인</a>
         </div>
-        <div class = "d-flex justify-content-end" sec:authorize="isAuthenticated()">
-            <span th:text="${#authentication.principal.attributes['kakao_account']['email']}"></span>
+        <div class = "d-flex align-items-center" sec:authorize="isAuthenticated()">
+            <span th:text="${#authentication.principal.attributes['kakao_account']['email']}" class="p-2"></span>
             <a href="/logout" class="btn btn-primary">로그아웃</a>
         </div>
         <!-- ROLE_USER 역할을 가진 사용자에게만 보이는 버튼 -->
