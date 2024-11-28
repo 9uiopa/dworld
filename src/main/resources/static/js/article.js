@@ -50,7 +50,8 @@ const createButton = document.getElementById('create-btn');
 
 if (createButton) {
     createButton.addEventListener('click', event => {
-        let boardTypeId = document.getElementById('boardType-id').value;
+        createButton.disabled = true;
+        const boardTypeId = document.getElementById('boardType-id').value;
         fetch('/api/articles', {
             method: 'POST',
             headers: {
@@ -69,7 +70,11 @@ if (createButton) {
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
                 alert('등록에 실패했습니다. 다시 시도해주세요.');
-                });
+                })
+            .finally(()=>{
+                createButton.disabled = false; // 요청 완료 후 다시 활성화
+            });
+
     });
 }
 
