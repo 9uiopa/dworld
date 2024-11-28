@@ -24,7 +24,7 @@ function vote(voteType) {
                             countDownvotes();
                             alert('비추천되었습니다.');
                         }
-
+                        location.reload();
                         return;
                     case 401:
                         // 인증되지 않은 사용자
@@ -36,10 +36,10 @@ function vote(voteType) {
                         return;
                     case 500:
                         //서버 에러
-                        alert('서버 에러 발생')
+                        alert('추천/비추천할 수 없습니다. 500 에러')
                         return;
                     default:
-                        alert('알 수 없는 에러')
+                        alert('추천/비추천할 수 없습니다.알 수 없는 에러')
                         return;
                 }
             })

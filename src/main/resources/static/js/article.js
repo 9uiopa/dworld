@@ -1,3 +1,36 @@
+// 생성 기능
+const createButton = document.getElementById('create-btn');
+
+if (createButton) {
+    createButton.addEventListener('click', event => {
+        createButton.disabled = true;
+        const boardTypeId = document.getElementById('boardType-id').value;
+        fetch('/api/articles', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value,
+                boardTypeId: boardTypeId
+            })
+        })
+            .then(() => {
+                alert('등록 완료되었습니다.');
+                location.replace(`/articles?boardType=${boardTypeId}`);
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                alert('등록에 실패했습니다. 다시 시도해주세요.');
+            })
+            .finally(()=>{
+                createButton.disabled = false; // 요청 완료 후 다시 활성화
+            });
+
+    });
+}
+
 // 삭제 기능
 // eventListener에서 람다식 한번, then() 에서 람다식 한번
 const deleteButton = document.getElementById('delete-btn');
@@ -45,31 +78,4 @@ if (modifyButton) {
     });
 }
 
-// 생성 기능
-const createButton = document.getElementById('create-btn');
-
-if (createButton) {
-    createButton.addEventListener('click', event => {
-        let boardTypeId = document.getElementById('boardType-id').value;
-        fetch('/api/articles', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                title: document.getElementById('title').value,
-                content: document.getElementById('content').value,
-                boardTypeId: boardTypeId
-            })
-        })
-            .then(() => {
-                alert('등록 완료되었습니다.');
-                location.replace(`/articles?boardType=${boardTypeId}`);
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-                alert('등록에 실패했습니다. 다시 시도해주세요.');
-                });
-    });
-}
 

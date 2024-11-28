@@ -12,7 +12,7 @@ commentArea.addEventListener('click',ev => {
         if(parentComment){
             parentCommentId = parentComment.getAttribute('data-comment-id')
         }
-
+        ev.target.disabled = true; // 중복 클릭 방지 - 버튼 비활성화
         fetch(`/api/articles/${articleId}/comments`,{
             method:'POST',
             headers: {
@@ -31,12 +31,15 @@ commentArea.addEventListener('click',ev => {
                 return response.json(); // JSON 파싱 전 원본 응답 출력
             })
             .then(data => {
-                console.log("Parsed Data:", data); // 파싱된 데이터 확인
+                alert('등록 완료되었습니다.');
                 location.reload()
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation - comment:', error);
                 alert('댓글 등록 중 에러 발생. 나중에 다시 시도해주세요');
+            })
+            .finally(()=>{
+                ev.target.disabled = false; // 댓글 등록 후 댓글 추가 버튼 다시 활성화
             });
 
     }
