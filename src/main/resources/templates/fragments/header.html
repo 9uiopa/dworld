@@ -35,7 +35,7 @@
             </ul>
             <form action="/articles" method="GET">
                 <label>
-                    <input type="text" name="query" placeholder="제목 or 글 내용 검색" required>
+                    <input type="text" name="query" placeholder="제목 or 글 내용 검색" th:value="${param.query}" required>
                 </label>
                 <button type="submit">검색</button>
             </form>
