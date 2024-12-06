@@ -1,7 +1,6 @@
 # 배포용
 services:
   web: # 서비스 이름 : web
-    #build: . # 디렉토리에 있는 Dockerfile을 사용하여 이미지를 생성
     image: 9uiopa/dworld:v1.3
     ports:
       - "80:8080" # 호스트의 80 포트를 컨테이너 8080포트와 연결
@@ -13,14 +12,10 @@ services:
       - elasticsearch
       - redis
     restart: always
-
     networks:
       - app-network
 
   elasticsearch:
-#    build: #로컬에서 별도 dockfile로 nori 포함된 es build
-#      context: .
-#      dockerfile: Dockerfile-es-nori
     image: 9uiopa/elasticsearch_nori
     ports:
       - '9200:9200'
