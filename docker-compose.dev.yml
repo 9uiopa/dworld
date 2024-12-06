@@ -21,7 +21,7 @@ services:
   web: # 서비스 이름 : web
     build: . # 디렉토리에 있는 Dockerfile을 사용하여 이미지를 생성
     ports:
-      - "8080:8080" # 호스트의 80 포트를 컨테이너 8080포트와 연결
+      - "8080:8080" # 호스트의 8080 포트를 컨테이너 8080포트와 연결
     environment:
       - SPRING_REDIS_HOST=redis # Redis 호스트 이름
       - SPRING_REDIS_PORT=6379 # Redis 포트 번호
