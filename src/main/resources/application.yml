@@ -12,7 +12,7 @@ spring:
       ddl-auto: update # 로컬 db 스키마를 JPA 엔티티와 일치하도록 생성하거나 수정한다.
 
   elasticsearch:
-    uris: http://elasticsearch:9200
+    uris: http://elasticsearch:9200 # elasticsearch: docker compose 사용시 컨테이너에서는 서비스 이름으로 통신 가능
 
   # 앱 실행시 sql 실행(data,schema.sql)
   sql:
@@ -22,7 +22,7 @@ spring:
     type: redis
   data:
     redis:
-      host: redis
+      host: redis # docker compose 사용시 컨테이너에서는 서비스 이름으로 통신 가능
       port: 6379
   session:
     redis:
