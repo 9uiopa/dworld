@@ -5,8 +5,10 @@ services:
     ports:
       - "80:8080" # 호스트의 80 포트를 컨테이너 8080포트와 연결
     environment:
-      - SPRING_REDIS_HOST=redis # Redis 호스트 이름
+      - SPRING_REDIS_HOST=${EC2_HOST} # Redis 호스트 이름
       - SPRING_REDIS_PORT=6379 # Redis 포트 번호
+      - SPRING_ELASTICSEARCH_HOST=${EC2_HOST}
+      - SPRING_ELASTICSEARCH_PORT=9200
       - TZ=Asia/Seoul # docker 컨테이너 timezone 설정
     depends_on:
       - elasticsearch
