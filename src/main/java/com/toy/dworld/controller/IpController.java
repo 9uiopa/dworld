@@ -14,11 +14,12 @@ public class IpController {
     @GetMapping("/client-ip")
     public String getClientIp(HttpServletRequest request) {
         String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+        if (xForwardedFor != null) {
+            log.debug("### xForwardedFor : " + xForwardedFor);
             // X-Forwarded-For에 클라이언트 IP가 포함
-            return "Client IP: " + xForwardedFor.split(",")[0];
+            return "Client IP: " + xForwardedFor;
         }
         // 기본적인 RemoteAddr 활용 (프록시 뒤가 아닌 경우)
-        return "Client IP: " + request.getRemoteAddr();
+        return "X-Forwarded-For 헤더 없음. Client IP: " + request.getRemoteAddr();
     }
 }

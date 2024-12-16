@@ -21,8 +21,10 @@ CREATE TABLE IF NOT EXISTS article
     user_id       BIGINT      NOT NULL,
     board_type_id BIGINT      NOT NULL,
     created       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated       TIMESTAMP DEFAULT null ON UPDATE CURRENT_TIMESTAMP,
     enabled       BIT       DEFAULT true,
+    downvotes     INT       DEFAULT 0,
+    upvotes       INT       DEFAULT 0,
     FOREIGN KEY (board_type_id) REFERENCES board_type (id) ,
     FOREIGN KEY (user_id) REFERENCES users (id)
 );

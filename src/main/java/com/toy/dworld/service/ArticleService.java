@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import com.toy.dworld.Constants;
 import com.toy.dworld.dto.*;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.ArticleIndex;
@@ -17,6 +18,7 @@ import com.toy.dworld.utils.CommentConverter;
 import com.toy.dworld.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,6 +45,7 @@ public class ArticleService {
     private final UserRepository userRepository;
     private final BoardTypeRepository boardTypeRepository;
     private final CommentService commentService;
+    private final CacheManager cacheManager;
 
     public ArticleViewResponse save(AddArticleRequest request, String email) throws IOException {
         // db 저장
@@ -80,7 +84,7 @@ public class ArticleService {
         return new PageImpl<>(articleViewResponses, articles.getPageable(), articles.getTotalElements());
     }
 
-    @Cacheable(value = "hotArticles", key = "'hot_' + #page + '_' + #size") //value : 캐시이름 key : 키 , key의 value : 메소드 반환값
+    @Cacheable(value = "hotArticles", key = "'hot_' + #page + '_' + #size") //value : 캐시이름, key : 키 , key의 value : 메소드 반환값
     public Page<ArticleViewResponse> getHotArticles(int page, int size){
         Page<Article> articles = articleRepository.findByUpvotesGreaterThanEqual(
                 HOT_ARTICLE_THRESHOLD,
@@ -114,12 +118,17 @@ public class ArticleService {
     }
 
     public void delete(long id) throws IOException {
+        //인기글 삭제시 인기글 캐시 초기화
+        if(articleRepository.findById(id).orElseThrow().getUpvotes()>= HOT_ARTICLE_THRESHOLD){
+            Objects.requireNonNull(cacheManager.getCache("hotArticles")).clear();
+        }
+        articleRepository.deleteById(id);
+
         elasticsearchClient.delete(d -> d
                 .index("article")
                 .id(String.valueOf(id))
                 .refresh(co.elastic.clients.elasticsearch._types.Refresh.True));
 
-        articleRepository.deleteById(id);
     }
 
     @Transactional //트랜잭션 시작, 메서드 종료되면 트랜잭션이 커밋 or 롤백됨 - 일관성과 무결성을 유지

@@ -23,6 +23,7 @@ services:
       - '9200:9200'
     environment:
       - discovery.type=single-node
+      - network.host=0.0.0.0 # 모든 IP에서의 요청을 받는다. 기본값 localhost
     volumes: # 도커 볼륨
       - elasticsearchdb:/usr/share/elasticsearch/data
     ulimits:
