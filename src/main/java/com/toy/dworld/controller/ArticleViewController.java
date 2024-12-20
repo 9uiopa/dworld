@@ -25,18 +25,20 @@ public class ArticleViewController {
     private final BoardTypeService boardTypeService;
 
     @GetMapping({"/articles","/"})
-    public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardType,
+    public String getArticlesByBoardType(@RequestParam(name = "boardType", defaultValue = "1") Long boardTypeId,
                                         @RequestParam(name = "page", defaultValue = "1") int page, Model model) throws IOException{
-        model.addAttribute("boardType",boardType);
+        // 게시판 정보 읽기
+        BoardTypeDTO boardType = boardTypeService.findById(boardTypeId);
+        model.addAttribute("boardType", boardType);
 
-        if (boardType == 1){
+        if (boardType.getId() == 1){
             // 인기 게시판
             Page<ArticleViewResponse> hotArticles = articleService.getHotArticles(page - 1, PAGE_SIZE);
             model.addAttribute("articlePage",hotArticles);
             return "articles/hotArticleList";
         }else{
             // 다른 게시판
-            Page<ArticleViewResponse> articlePage = articleService.getArticlesByBoardType(boardType,page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
+            Page<ArticleViewResponse> articlePage = articleService.getArticlesByBoardType(boardType.getId(),page - 1, PAGE_SIZE); //Page : JPA에서 제공하는 페이징용 인터페이스. 관련 메서드 정의돼 있음.
             model.addAttribute("articlePage", articlePage);
 
             return "articles/articleList";

@@ -71,7 +71,7 @@ public class ArticleService {
         return toArticleViewResponsePage(articles);
     }
 
-    // Article -> ArticleViewResponse 변환 및 commentCount 설정
+    // Article -> ArticleViewResponse 변환 + commentCount 설정
     @NotNull
     private Page<ArticleViewResponse> toArticleViewResponsePage(Page<Article> articles) {
         List<ArticleViewResponse> articleViewResponses = articles.stream()
