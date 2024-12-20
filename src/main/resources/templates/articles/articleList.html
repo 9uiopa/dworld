@@ -12,36 +12,37 @@
 <div class="container">
     <div th:replace="~{fragments/header :: header}"></div>
     <div id="data-container" class="row-6">
+        <h4 id="boardName" th:text="${boardType.name + ' 게시판'}"></h4>
         <div th:each="item : ${articlePage.content}" class="d-flex justify-content-start align-items-center mb-2">
             <a th:text="${item.title} + ' [' + ${item.commentCount} + ']'" th:href="@{/articles/{id}(id=${item.id})}" class="text-decoration-none">글 제목</a>
         </div>
     </div>
     <button type="button" id="create-btn"
-            th:onclick="|location.href='/new-article?boardType=${boardType}';|"
+            th:onclick="|location.href='/new-article?boardType=${boardType.id}';|"
             class="btn btn-secondary btn-sm mb-3">글 쓰기</button>
     <nav aria-label="Index Page navigation" th:if="${articlePage.totalPages > 0}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${articlePage.hasPrevious()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(boardType=${boardType}, page=1)}" aria-label="First">
+                <a class="page-link" th:href="@{/articles(boardType=${boardType.id}, page=1)}" aria-label="First">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <li class="page-item" th:classappend="${articlePage.hasPrevious()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(boardType=${boardType},page=${articlePage.getNumber()})}" aria-label="Previous">
+                <a class="page-link" th:href="@{/articles(boardType=${boardType.id},page=${articlePage.getNumber()})}" aria-label="Previous">
                     <span aria-hidden="true">&lsaquo;</span>
                 </a>
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(1,articlePage.getTotalPages())}"
                 th:classappend="${i == articlePage.getNumber() + 1} ? 'active'">
-                <a class="page-link" th:href="@{/articles(boardType=${boardType},page=${i})}" th:text="${i}">1</a>
+                <a class="page-link" th:href="@{/articles(boardType=${boardType.id},page=${i})}" th:text="${i}">1</a>
             </li>
             <li class="page-item" th:classappend="${articlePage.hasNext()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(boardType=${boardType},page=${articlePage.getNumber() + 2})}" aria-label="Next">
+                <a class="page-link" th:href="@{/articles(boardType=${boardType.id},page=${articlePage.getNumber() + 2})}" aria-label="Next">
                     <span aria-hidden="true">&rsaquo;</span>
                 </a>
             </li>
             <li class="page-item" th:classappend="${articlePage.hasNext()} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/articles(boardType=${boardType},page=${articlePage.totalPages})}" aria-label="Last">
+                <a class="page-link" th:href="@{/articles(boardType=${boardType.id},page=${articlePage.totalPages})}" aria-label="Last">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
