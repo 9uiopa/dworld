@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article,Long> {
-    Page<Article> findByBoardTypeId(Long boardTypeId, Pageable pageable);
-    Page<Article> findByUpvotesGreaterThanEqual(int minUpvotes,Pageable pageable);
+    Page<Article> findByBoardTypeIdAndEnabledTrue(Long boardTypeId, Pageable pageable);
+    Page<Article> findByUpvotesGreaterThanEqualAndEnabledTrue(int minUpvotes,Pageable pageable);
 }

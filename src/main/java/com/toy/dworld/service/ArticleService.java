@@ -65,7 +65,7 @@ public class ArticleService {
     }
 
     public Page<ArticleViewResponse> getArticlesByBoardType(long boardTypeId,int page, int size) {
-        Page<Article> articles = articleRepository.findByBoardTypeId(
+        Page<Article> articles = articleRepository.findByBoardTypeIdAndEnabledTrue(
                 boardTypeId,
                 PageRequest.of(page, size, by(DESC, "createdAt")));
         return toArticleViewResponsePage(articles);
@@ -86,7 +86,7 @@ public class ArticleService {
 
     @Cacheable(value = "hotArticles", key = "'hot_' + #page + '_' + #size") //value : 캐시이름, key : 키 , key의 value : 메소드 반환값
     public Page<ArticleViewResponse> getHotArticles(int page, int size){
-        Page<Article> articles = articleRepository.findByUpvotesGreaterThanEqual(
+        Page<Article> articles = articleRepository.findByUpvotesGreaterThanEqualAndEnabledTrue(
                 HOT_ARTICLE_THRESHOLD,
                 PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"))
         );
