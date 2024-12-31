@@ -5,7 +5,6 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import com.toy.dworld.Constants;
 import com.toy.dworld.dto.*;
 import com.toy.dworld.entity.Article;
 import com.toy.dworld.entity.ArticleIndex;
@@ -148,7 +147,7 @@ public class ArticleService {
 
     public Page<ArticleIndexDTO> searchArticles(String keyword, int page, int size) throws IOException {
         Pageable pageable = PageRequest.of(page, size,by(DESC,"createdAt"));
-        // 쿼리 생성
+        // es 쿼리 생성
         Query query = Query.of(q -> q.multiMatch(mmq -> mmq
                         .fields(Arrays.asList("title", "content"))
                         .query(keyword)
@@ -156,10 +155,10 @@ public class ArticleService {
                 )
         );
 
-        // 요청 생성
+        // es 요청 생성
         SearchRequest request = SearchRequest.of(sr -> sr.index("article")
                 .query(query)
-                .from(page)  // 시작점 설정
+                .from(page*size)  // 시작점 설정
                 .size(size)  // 페이지 크기 설정
         );
 
@@ -174,7 +173,7 @@ public class ArticleService {
                     return new ArticleIndexDTO(article);
                 })
                 .collect(Collectors.toList());
-
+        //쿼리 결과의 개수
         long totalHits = searchResponse.hits().total().value();
 
         return new PageImpl<>(articles, pageable, totalHits);
