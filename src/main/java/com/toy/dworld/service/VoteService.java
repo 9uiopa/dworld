@@ -70,7 +70,7 @@ public class VoteService {
             articleRepository.save(article);
             // 인기글 커트라인 넘었을 때 인기게시글 캐시 무효화
             if(article.getUpvotes()+1 >= Constants.HOT_ARTICLE_THRESHOLD){
-                // 프록시를 참조해서 메서드 내부호출문제 해결
+                // (VoteService를 구현 또는 상속 중인)프록시 객체를 참조해서 메서드 내부호출문제 해결
                 VoteService proxy = applicationContext.getBean(VoteService.class);
                 proxy.evictHotArticleCache();
             }

@@ -173,8 +173,8 @@ public class ArticleService {
                     return new ArticleIndexDTO(article);
                 })
                 .collect(Collectors.toList());
-        //쿼리 결과의 개수
-        long totalHits = searchResponse.hits().total().value();
+        //쿼리 결과의 총 개수(모든 페이지)
+        long totalHits = searchResponse.hits().total().value(); // .total() : from과 size 조건 무시
 
         return new PageImpl<>(articles, pageable, totalHits);
     }

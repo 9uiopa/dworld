@@ -14,6 +14,11 @@ services:
       - elasticsearch
       - redis
     restart: always
+    logging: # 로그 순환 설정, 로그가 무한히 쌓이는 것 방지
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - app-network
 
